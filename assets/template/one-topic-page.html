@@ -1,3 +1,14 @@
-<h1>{{id}}</h1>
-<h1>{{title}}</h1>
-<h2>{{description}}</h2>
+<div class="topic-wrapper" style="background-image: url({{image}})">
+    <header>
+        <h4>{{title}}</h4>
+        <p>{{description}}</p>
+    </header>
+    <div class="pk-box">
+        <div class="pk-item" style="background-image: url({{pk1.image}})">
+            <i class="fa fa-check-circle"></i>
+        </div>
+        <div class="pk-item" style="background-image: url({{pk2.image}})">
+            <i class="fa fa-check-circle"></i>
+        </div>
+    </div>
+</div>

@@ -2,13 +2,18 @@ $(function() {
     var TopicsView = TopApp.CollectionView.extend({
         ModelView: TopApp.ModelView.extend({
             template: TPL['one-topic-page'],
-            className: 'topic'
+            className: 'one-topic',
+            render: function() {
+                var attrs = this.model ? this.model.toJSON() : {};
+                attrs.image = attrs.candidates[0].image;
+                attrs.pk1 = _.sample(attrs.candidates);
+                attrs.pk2 = _.sample(attrs.candidates);
+                return this.renderTemplate(attrs);
+            }
         })
     });
     TopApp.Pages.Home = new (TopApp.PageView.extend({
-        events: {
-            
-        },
+        events: {},
         initPage: function() {
             this.views = {
                 topics: new TopicsView({
@@ -18,9 +23,9 @@ $(function() {
             };
         },
         fixTopicWidth: function() {
-            var screenWidth = $(window).innerWidth();
-            this.$('.carousel-inner').css('width', screenWidth * 3);
-            this.$('.topic').css('width', screenWidth);
+            var screenWidth = this.$('.wrapper').innerWidth();
+            this.$('.carousel-inner').css('width', screenWidth * TopApp.Data.Topics.length);
+            this.$('.one-topic').css('width', screenWidth);
         },
         initScroller: function() {
             if (!this.scroller) {
@@ -29,7 +34,8 @@ $(function() {
                     scrollY: false,
                     disableMouse: false,
                     snap: true,
-                    momentum: false
+                    momentum: false,
+                    eventPassthrough: true
                 });
             } else {
                 this.scroller.refresh();

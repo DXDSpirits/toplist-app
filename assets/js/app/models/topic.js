@@ -26,16 +26,26 @@ TopApp.Data.Topics.set([
         id: 1,
         title: '十大最好喝的咖啡馆',
         description: '十大最好喝的咖啡馆',
-        candidates: _.clone(candidates_example)
+        candidates: _.shuffle(_.clone(candidates_example))
     }, {
         id: 2,
         title: '十大最难喝的咖啡馆',
         description: '十大最难喝的咖啡馆',
-        candidates: _.clone(candidates_example)
+        candidates: _.shuffle(_.clone(candidates_example))
     }, {
         id: 3,
         title: '十大最好看的咖啡馆',
         description: '十大最好看的咖啡馆',
-        candidates: _.clone(candidates_example)
+        candidates: _.shuffle(_.clone(candidates_example))
+    }, {
+        id: 4,
+        title: '十大最好看的咖啡馆',
+        description: '十大最好看的咖啡馆',
+        candidates: _.shuffle(_.clone(candidates_example))
+    }, {
+        id: 5,
+        title: '十大最好看的咖啡馆',
+        description: '十大最好看的咖啡馆',
+        candidates: _.shuffle(_.clone(candidates_example))
     }
 ]);
