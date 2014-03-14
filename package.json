@@ -1,0 +1,30 @@
+{
+    "name": "meiweiapp",
+    "description": "Meiwei App",
+    "version": "1.0.0",
+    "keywords": [],
+    "homepage": "http://www.clubmeiwei.com",
+    "author": "XD",
+    "repository": {
+        "type": "git",
+        "url": "https://bitbucket.org/DXDSpirits/meiwei-app.git"
+    },
+    "bugs": {
+        "url": "https://bitbucket.org/DXDSpirits/meiwei-app/issues"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.0",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-copy": "~0.4.0",
+        "grunt-contrib-uglify": "~0.2.2",
+        "grunt-contrib-sass": "~0.4.0",
+        "grunt-contrib-jshint": "~0.6.0",
+        "grunt-includes": "~0.2.4",
+        "grunt-contrib-connect": "~0.3.0",
+        "grunt-contrib-watch": "~0.4.4",
+        "grunt-concurrent": "~0.2.0",
+        "mime": "~1.2.9",
+        "grunt-shell": "~0.2.2",
+        "grunt-gettext": "~0.1.0"
+    }
+}

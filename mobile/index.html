@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]>    <html class="no-js iem7"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Top10</title>
+        <meta name="description" content="Top10">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+        <meta http-equiv="cleartype" content="on">
+
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/img/touch/apple-touch-icon-144x144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/img/touch/apple-touch-icon-114x114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/img/touch/apple-touch-icon-72x72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/img/touch/apple-touch-icon-57x57-precomposed.png">
+        <link rel="shortcut icon" href="assets/img/favicon.ico">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="assets/img/touch/apple-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#222222">
+
+        <!-- For iOS web apps. Delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="">
+
+        <link rel="stylesheet" href="assets/css/mobile.min.css">
+        <script src="assets/js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!-- Page content Begin -->
+        
+        <div id="apploader" class="invisible">
+        	<div class="loader">
+        		<div class="loading-sprite"></div>
+        		<p class="ajax-error hidden">网络不给力啊，请稍后再试！</p>
+        	</div>
+        </div>
+        <div id="dialog-overlay" class="hidden"></div>
+        
+        include "view-home.html"
+        
+        <!-- Page content End -->
+        
+        <script src="assets/js/vendor/jquery-2.0.2.min.js"></script>
+        <script src="assets/js/vendor/underscore-min.js"></script>
+        <script src="assets/js/vendor/mustache-min.js"></script>
+        <script src="assets/js/vendor/backbone-min.js"></script>
+        
+        <script src="assets/js/plugins.js"></script>
+        
+        <script src="assets/js/templates.js"></script>
+        <script src="assets/js/mw-app.min.js"></script>
+        <script src="cordova.js"></script>
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','assets/js/vendor/analytics.min.js','ga');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.meiwei.app" version="2.2.0" 
+    xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MeiweiApp</name>
+    <description>中高端服务平台</description>
+    <author email="dxd.spirits@gmail.com" href="http://blog.ukisama.com">Xindong Ding</author>
+    <access origin="*" />
+    <feature name="Weixin">
+        <param name="android-package" value="com.meiwei.app.plugin.WeixinPlugin" />
+    </feature>
+    <feature name="Weixin">
+        <param name="ios-package" value="Weixin" />
+    </feature>
+    <preference name="WebViewBounce" value="true" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="Orientation" value="landscape" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="BackgroundColor" value="0xffffffff" />
+    <preference name="SplashScreen" value="splash" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <preference name="BackupWebStorage" value="local"/>
+    <content src="index.html" />
+</widget>

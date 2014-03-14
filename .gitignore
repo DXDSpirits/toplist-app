@@ -1,0 +1,6 @@
+/assets/js/app/app-local.js
+/node_modules/
+/.sass-cache/
+/www/
+config.json
+*.DS_Store
