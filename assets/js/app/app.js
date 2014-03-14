@@ -1,7 +1,7 @@
 
 window.TopApp = new (Backbone.View.extend({
     
-    Version: 2.2,
+    Version: 1.0,
     
     Models: {},
     Views: {},
@@ -17,11 +17,7 @@ window.TopApp = new (Backbone.View.extend({
     
     start: function() {
         TopApp.initDevice();
-        TopApp.initAPI();
-        TopApp.initVersion();
-        TopApp.showSplash();
         TopApp.initAjaxEvents();
-        TopApp.initLanguage();
         TopApp.initGeolocation();
         TopApp.initSync();
         TopApp.initGa();
@@ -29,15 +25,6 @@ window.TopApp = new (Backbone.View.extend({
         TopApp.fixViewport();
     }
 }))({el: document.body});
-
-TopApp.showSplash = function() {
-    if (navigator.splashscreen) {
-        navigator.splashscreen.show();
-        setTimeout(function() {
-            navigator.splashscreen.hide();
-        }, 1000);
-    }
-};
 
 TopApp.initDevice = function() {
     if (window.device) {
@@ -65,83 +52,6 @@ TopApp.fixViewport = function() {
     } else {
         $('meta[name=viewport]').attr('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0');
     }
-};
-
-TopApp.initAPI = function() {
-    var PrimaryAPI = "http://api.clubmeiwei.com";
-    var SecondaryAPI = "http://api.meiwei.oatpie.com";
-    (new TopApp.Model()).fetch({
-        global: false,
-        url: PrimaryAPI + '/clients/app/',
-        success: function() {
-            localStorage.removeItem('api-host');
-            if (TopApp.configs.APIHost == SecondaryAPI) {
-                window.location.reload();
-            }
-        },
-        error: function() {
-            if (TopApp.configs.APIHost == PrimaryAPI) {
-                localStorage.setItem('api-host', SecondaryAPI);
-                window.location.reload();
-            }
-        },
-    });
-};
-
-TopApp.initVersion = function() {
-    var pVersion = parseFloat(localStorage.getItem('version-code')) || 1.0;
-    if (TopApp.Version != pVersion) {
-        var authToken = localStorage.getItem('auth-token');
-        localStorage.clear();
-        localStorage.setItem('version-code', TopApp.Version);
-        if (authToken) localStorage.setItem('auth-token', authToken);
-    }
-    if (!TopApp.isCordova()) return;
-    var app = new TopApp.Models.App();
-    app.fetch({
-        global: false,
-        success: function(model, response, options) {
-            var version = parseFloat(model.get('version'));
-            var onConfirm = function() {
-                if (device.platform == 'iOS') {
-                    var ref = window.open('https://itunes.apple.com/app/id689668571' ,'_blank', 'location=no');
-                } else {
-                    var ref = window.open('http://web.clubmeiwei.com/ad/apppromo' ,'_blank', 'location=no');
-                }
-            };
-            if (version && version > TopApp.Version) {
-                TopApp.showConfirmDialog(
-                    TopApp._('Update Available'),
-                    TopApp._('New version is available, go to update?'),
-                    onConfirm
-                );
-            }
-        }
-    });
-};
-
-TopApp.initLanguage = function() {
-    var langCode = localStorage.getItem('lang-code') || 'zh';
-    TopApp._ = function(msgId) {
-        var msg = TopApp.i18n[msgId];
-        return msg ? msg[langCode] : msgId;
-    };
-    TopApp.initLang = function(context) {
-        context = context || document;
-        $(context).find('[data-i18n]').each(function() {
-            $(this).html(TopApp._($(this).attr('data-i18n')));
-        });
-        $(context).find('[data-placeholder-i18n]').each(function() {
-            $(this).attr('placeholder', TopApp._($(this).attr('data-placeholder-i18n')));
-        });
-        moment.lang(langCode == 'en' ? 'en' : 'zh-cn');
-    };
-    TopApp.setLang = function(lang) {
-        localStorage.setItem('lang-code', (langCode = lang));
-        TopApp.initLang();
-    };
-    TopApp.getLang = function() { return langCode; };
-    TopApp.initLang();
 };
 
 TopApp.initGeolocation = function(callback) {

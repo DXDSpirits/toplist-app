@@ -41,10 +41,12 @@ module.exports = function(grunt) {
         },
         sass: {
             bootstrap: {
+                options: { style: 'compressed' },
                 src: 'assets/scss/bootstrap.scss',
                 dest: '<%= cfg.path.dest %>/assets/css/bootstrap.min.css'
             },
             mobile: {
+                options: { style: 'compressed' },
                 src: 'assets/scss/mobile.scss',
                 dest: '<%= cfg.path.dest %>/assets/css/mobile.min.css'
             }

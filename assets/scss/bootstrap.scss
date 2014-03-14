@@ -1,8 +1,8 @@
 // Core variables and mixins
-@import "bootstrap/variables";
 @import "variables-custom";
-@import "bootstrap/mixins";
+@import "bootstrap/variables";
 @import "mixins-custom";
+@import "bootstrap/mixins";
 
 // Reset
 @import "bootstrap/normalize";

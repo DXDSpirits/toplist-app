@@ -1,11 +1,11 @@
 
 // Core variables and mixins
-@import "bootstrap/variables";
 @import "variables-custom";
-@import "bootstrap/mixins";
+@import "bootstrap/variables";
 @import "mixins-custom";
+@import "bootstrap/mixins";
 
-// Font Awesome
+// FontAwesome
 @import "font-awesome/variables";
 @import "font-awesome/mixins";
 @import "font-awesome/path";
@@ -20,6 +20,8 @@
 @import "font-awesome/icons";
 
 
-// Page specific styles
+// App specific styles
+@import "pages/keyframes";
+@import "pages/layout";
 @import "pages/home";
 @import "pages/misc";

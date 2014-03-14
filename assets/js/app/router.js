@@ -12,11 +12,7 @@ TopApp.Router = new (Backbone.Router.extend({
 		this.route(/^home(?:\/l(\d+))?$/, 'home');
 	},
 	index: function() {
-	    if (localStorage.getItem('first-time')) {
-	        TopApp.Pages.Home.go(); TopApp.history.active = TopApp.Pages.Home;
-	    } else {
-	        TopApp.Pages.GetStarted.go(); TopApp.history.active = TopApp.Pages.GetStarted;
-	    }
+        TopApp.Pages.Home.go(); TopApp.history.active = TopApp.Pages.Home;
 	},
 	home: function(lid) { TopApp.Pages.Home.go({listId: lid}); TopApp.history.active = TopApp.Pages.Home; },
 }));
