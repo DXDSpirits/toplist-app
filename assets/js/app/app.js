@@ -4,6 +4,7 @@ window.TopApp = new (Backbone.View.extend({
     Version: 1.0,
     
     Models: {},
+    Data: {},
     Views: {},
     Collections: {},
     

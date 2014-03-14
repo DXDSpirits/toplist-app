@@ -56,7 +56,6 @@ TopApp.View = Backbone.View.extend({
         this.removeFastButtons();
         this.$el.html(this.template(attrs || {}));
         this.delegateFastButtons();
-        TopApp.initLang(this.$el);
         return this;
     }
 });

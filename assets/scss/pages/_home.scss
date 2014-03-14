@@ -1,0 +1,17 @@
+#view-home {
+    .wrapper, .carousel {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    .carousel-inner {
+        width: 0;
+        @include clearfix();
+    }
+    .topic {
+        padding: 20px;
+        float: left;
+        width: 0;
+    }
+}
