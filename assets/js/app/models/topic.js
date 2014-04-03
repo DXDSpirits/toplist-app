@@ -8,6 +8,9 @@ TopApp.Collections.Topics = TopApp.Collection.extend({
     model: TopApp.Models.Topic
 });
 
+TopApp.Data.Topics = new TopApp.Collections.Topics();
+
+/*
 var candidates_example = [
     {id: 1, image: 'assets/img/candidates/1.jpg', description: '没什么可以说的'},
     {id: 2, image: 'assets/img/candidates/2.jpg', description: '没什么可以说的'},
@@ -20,7 +23,6 @@ var candidates_example = [
     {id: 9, image: 'assets/img/candidates/9.jpg', description: '没什么可以说的'},
     {id: 10, image: 'assets/img/candidates/10.jpg', description: '没什么可以说的'},
 ];
-TopApp.Data.Topics = new TopApp.Collections.Topics();
 TopApp.Data.Topics.set([
     {
         id: 1,
@@ -49,3 +51,4 @@ TopApp.Data.Topics.set([
         candidates: _.shuffle(_.clone(candidates_example))
     }
 ]);
+*/

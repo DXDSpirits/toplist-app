@@ -1,17 +1,25 @@
 $(function() {
     var TopicsView = TopApp.CollectionView.extend({
         ModelView: TopApp.ModelView.extend({
+            events: { 'click .pk-item': 'pk' },
             template: TPL['one-topic-page'],
             className: 'one-topic',
             render: function() {
                 var attrs = this.model ? this.model.toJSON() : {};
                 attrs.image = attrs.candidates[0].image;
-                attrs.pk1 = _.sample(attrs.candidates);
-                attrs.pk2 = _.sample(attrs.candidates);
+                _shuffle = _.shuffle(attrs.candidates);
+                attrs.avatar = _shuffle[0];
+                attrs.pk1 = _shuffle[1];
+                attrs.pk2 = _shuffle[2];
                 return this.renderTemplate(attrs);
+            },
+            pk: function(e) {
+                var $pkItem = $(e.currentTarget);
+                $pkItem.addClass('win').siblings().removeClass('win');
             }
         })
     });
+    
     TopApp.Pages.Home = new (TopApp.PageView.extend({
         events: {},
         initPage: function() {
@@ -42,9 +50,15 @@ $(function() {
             }
         },
         render: function() {
-            this.views.topics.render();
-            this.fixTopicWidth();
-            this.initScroller();
+            var self = this;
+            TopApp.Data.Topics.fetch({
+                reset: true,
+                success: function() {
+                    self.fixTopicWidth();
+                    self.initScroller();
+                }
+            });
+            
         }
     }))({el: $("#view-home")});
 });

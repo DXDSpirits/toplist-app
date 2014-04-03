@@ -30,8 +30,7 @@ module.exports = function(grunt) {
                     'assets/js/plugin/plugins.js',
                     'assets/js/plugin/qrcode.js',
                     'assets/js/plugin/jquery.qrcode.js',
-                    'assets/js/plugin/hammer.js',
-                    'assets/js/plugin/jquery.hammer.js',
+                    'assets/js/plugin/fastclick.js',
                     'assets/js/plugin/moment.js',
                     'assets/js/plugin/moment.zh-cn.js',
                     'assets/js/plugin/iscroll.js'
@@ -114,7 +113,7 @@ module.exports = function(grunt) {
         connect: {
             server: {
                 options: {
-                    port: 8080,
+                    port: 8081,
                     base: '<%= cfg.path.dest %>',
                     keepalive: true,
                     hostname: null,

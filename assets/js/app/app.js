@@ -12,8 +12,8 @@ window.TopApp = new (Backbone.View.extend({
     Pages: {},
     
     configs: {
-        APIHost: localStorage.getItem('api-host') || "http://api.clubmeiwei.com",
-        ajaxTimeout: 10000
+        APIHost: "http://api.toplist.oatpie.com",
+        ajaxTimeout: 120000
     },
     
     start: function() {
@@ -36,11 +36,15 @@ TopApp.initDevice = function() {
     } else {
         window.device = { platform: 'WebApp' };
     }
+    /*
+     * Emulate click events on body. Remove 300ms delay.
+     */
+    FastClick.attach(document.body);
 };
 
 TopApp.fixViewport = function() {
     var wrapperOffset = 44;
-    if (window.device.platform === 'iOS' && parseFloat(window.device.version) === 7.0) {
+    if (window.device.platform === 'iOS' && parseFloat(window.device.version) >= 7.0) {
         wrapperOffset += 20;
     }
     var fixWrapperHeight = function() {
@@ -73,16 +77,12 @@ TopApp.initSync = function() {
     var originalSync = Backbone.sync;
     Backbone.sync = function(method, model, options) {
         options.timeout = options.timeout || TopApp.configs.ajaxTimeout;
-        _.extend((options.headers || (options.headers = {})), { 'Accept-Language': TopApp.getLang() });
+        options.headers = options.headers || {};
         if (authToken) {
             _.extend(options.headers, { 'Authorization': 'Token ' + authToken });
         }
         if (options.nocache) {
             _.extend(options.headers, { 'Cache-Control': 'no-cache' });
-        }
-        if (options.url) {
-            options.url = options.url.replace(/^(?:http|https)\:\/{2}[a-zA-Z0-9\-_\.]+(?:\:[0-9]{1,4})?(.*)/,
-                TopApp.configs.APIHost + '$1');
         }
         return originalSync.call(model, method, model, options);
     };
