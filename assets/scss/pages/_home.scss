@@ -13,7 +13,10 @@
         float: left;
         width: 0;
         > .topic-wrapper {
+            padding-top: 30%;
             > header {
+                padding: 10px;
+                background: rgba(255, 255, 255, .5);
                 min-height: 120px;
             }
             box-shadow: 0 0 5px rgba(0, 0, 0, .5);
@@ -23,27 +26,9 @@
             background-size: cover;
             overflow: hidden;
             position: relative;
-            &:before {
-                content: "";
-                position: absolute;
-                z-index: 0;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                @include gradient-vertical($start-color: rgba(255, 255, 255, 1), 
-                                           $end-color: rgba(255, 255, 255, .0001),
-                                           $start-percent: 0%,
-                                           $end-percent: 100%);
-            }
-        }
-        header {
-            padding: 10px;
-            position: relative;
         }
     }
     .pk-box {
-        padding-top: 50%;
         width: 100%;
         position: relative;
         @include clearfix();
@@ -53,22 +38,45 @@
         width: 50%;
         float: left;
         padding-top: 50%;
+        background-color: #fff;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
         position: relative;
+        @include user-select(none);
         .fa {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            font-size: 100px;
-            margin-left: -50px;
-            margin-top: -50px;
-            color: lighten($brand-success, 50%);
-            opacity: .7;
+            top: 5px;
+            right: 10px;
+            font-size: 50px;
+            color: lighten($brand-success, 20%);
+            opacity: .5;
+            @include transition(all .35s ease-in-out);
         }
         &.win .fa {
+            @include scale(1.5);
             color: $brand-success;
+            opacity: 1;
         }
+        &.fail .fa {
+            @include rotate(-180deg);
+        }
+        &:active .fa, &:hover .fa {
+            
+        }
+        border-top: 2px solid #fff;
+        &:first-child { border-right: 1px solid #fff; }
+        &:last-child { border-left: 1px solid #fff; }
+    }
+    .pk-title {
+        background: rgba(0, 0, 0, .7);
+        color: #FFF;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+        text-align: center;
+        font-size: $font-size-small;
     }
 }

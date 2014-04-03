@@ -15,7 +15,8 @@ $(function() {
             },
             pk: function(e) {
                 var $pkItem = $(e.currentTarget);
-                $pkItem.addClass('win').siblings().removeClass('win');
+                $pkItem.removeClass('fail').addClass('win')
+                       .siblings().removeClass('win').addClass('fail');
             }
         })
     });
