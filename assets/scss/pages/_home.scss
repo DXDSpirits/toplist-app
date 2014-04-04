@@ -1,17 +1,7 @@
 #view-home {
-    .wrapper, .carousel {
-        width: 100%;
-        overflow-x: hidden;
-        position: relative;
-    }
-    .carousel-inner {
-        width: 0;
-        @include clearfix();
-    }
     .one-topic {
         padding: 20px;
-        float: left;
-        width: 0;
+        width: 100%;
         > .topic-wrapper {
             padding-top: 30%;
             > header {
@@ -26,6 +16,10 @@
             background-size: cover;
             overflow: hidden;
             position: relative;
+        }
+        &.animate {
+            @include animation(flip .5s ease-in-out);
+            @include backface-visibility(hidden);
         }
     }
     .pk-box {
