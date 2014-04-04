@@ -7,8 +7,8 @@ TopApp.showConfirmDialog = function(title, content, onConfirm) {
         className: 'dialog confirm-dialog',
         template: TPL['confirm-dialog'],
         events: {
-            'fastclick .btn-cancel': 'closeDialog',
-            'fastclick .btn-confirm': 'confirm'
+            'click .btn-cancel': 'closeDialog',
+            'click .btn-confirm': 'confirm'
         },
         closeDialog: function() {
             this.remove();

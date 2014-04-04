@@ -1,15 +1,7 @@
 
 TopApp.View = Backbone.View.extend({
     initialize: function() {
-        this.fastButtons = [];
-        this.delegateFastButtons();
         if (this.initView) this.initView();
-    },
-    remove: function() {
-        this.$el.remove();
-        this.stopListening();
-        this.removeFastButtons();
-        return this;
     },
     displayError: function($el, text) {
         try {
@@ -19,43 +11,9 @@ TopApp.View = Backbone.View.extend({
             $el.text(text || 'Error');
         }
     },
-    bindFastButton: function(el, handler) {
-        var btn = new MBP.fastButton(el.length && el.length == 1 ? el[0] : el, handler);
-        this.fastButtons.push(btn);
-    },
-    delegateFastButtons: function() {
-        var EVENT_NAME = 'fastclick';
-        var events = (_.isFunction(this.events) ? this.events() : this.events) || {};
-        var that = this;
-        function byEventName(key) {
-            return key.substr(0, EVENT_NAME.length + 1) === EVENT_NAME + ' ' || key === EVENT_NAME;
-        }
-        function toJustSelectors(key) {
-            return key.substr(EVENT_NAME.length + 1);
-        }
-        function toMatchingElements(selector) {
-            return selector === "" ? [that.el] : that.$(selector).toArray();
-        }
-        function registerTrigger(element) {
-            //new MBP.fastButton(element, function() {
-            that.bindFastButton(element, function() {
-                $(element).trigger(EVENT_NAME);
-            });
-        }
-        _.chain(events).keys().filter(byEventName).map(toJustSelectors).map(toMatchingElements).flatten().each(registerTrigger);
-    },
-    removeFastButtons: function() {
-        var btns = this.fastButtons;
-        for (var i=0; i<btns.length; i++) {
-            btns[i].destroy();
-        }
-        this.fastButtons.length = 0;
-    },
     template: Mustache.compile(""),
     renderTemplate: function(attrs) {
-        this.removeFastButtons();
         this.$el.html(this.template(attrs || {}));
-        this.delegateFastButtons();
         return this;
     }
 });
@@ -122,8 +80,8 @@ TopApp.CollectionView = TopApp.View.extend({
 
 TopApp.PageView = TopApp.View.extend({
     events: {
-        'fastclick .header-btn-left': 'onClickLeftBtn',
-        'fastclick .header-btn-right': 'onClickRightBtn'
+        'click .header-btn-left': 'onClickLeftBtn',
+        'click .header-btn-right': 'onClickRightBtn'
     },
     disablePage: function() {
         this.undelegateEvents();
