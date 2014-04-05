@@ -2,27 +2,31 @@
     .one-topic {
         padding: 20px;
         width: 100%;
-        > .topic-wrapper {
-            padding-top: 30%;
-            > header {
-                padding: 10px;
-                background: rgba(255, 255, 255, .5);
-                min-height: 120px;
-            }
-            box-shadow: 0 0 5px rgba(0, 0, 0, .5);
-            border-radius: 5px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            overflow: hidden;
-            position: relative;
-        }
         &.animate {
             @include animation(flip .5s ease-in-out);
             @include backface-visibility(hidden);
         }
     }
+    .topic-wrapper {
+        > header {
+            padding: 10px;
+            background: rgba(255, 255, 255, .5);
+            min-height: 200px;
+        }
+        .pk-icon {
+            height: 100px;
+            @include center-block();
+        }
+        box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+        border-radius: 5px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        overflow: hidden;
+        position: relative;
+    }
     .pk-box {
+        background: rgba(255, 255, 255, .5);
         width: 100%;
         position: relative;
         @include clearfix();
@@ -55,12 +59,15 @@
         &.fail .fa {
             @include rotate(-180deg);
         }
-        &:active .fa, &:hover .fa {
-            
-        }
         border-top: 2px solid #fff;
-        &:first-child { border-right: 1px solid #fff; }
-        &:last-child { border-left: 1px solid #fff; }
+        &:first-child {
+            border-right: 1px solid #fff;
+            @include animation(slideinfromleft .5s ease-in-out);
+        }
+        &:last-child {
+            border-left: 1px solid #fff;
+            @include animation(slideinfromright .5s ease-in-out);
+        }
     }
     .pk-title {
         background: rgba(0, 0, 0, .7);

@@ -26,33 +26,48 @@ $(function() {
     var oneTopic = new OneTopic();
     
     var TopicsView = TopApp.View.extend({
-        events: { 'click .pk-item': 'pk' },
-        template: TPL['one-topic-page'],
-        initView: function() {
-            _.bindAll(this, 'render');
-            this.$el.on('webkitAnimationEnd', function(e) {
-                if (e.originalEvent.animationName == "flip") {
-                    $(this).removeClass('animate');
-                }
-            });
+        events: {
+            'click .pk-item': 'pk',
+            'webkitAnimationEnd': 'flipEnd'
         },
-        render: function(attrs) {
-            this.$el.addClass('animate');
+        template: TPL['one-topic-page'],
+        templatePkItem: TPL['pk-item'],
+        initView: function() {},
+        flipEnd: function(e) {
+            if (e.originalEvent.animationName == "flip") {
+                this.$el.removeClass('animate');
+            }
+        },
+        render: function() {
+            this.attrs.avatar = _.sample(this.attrs.candidates, 1)[0].picture;
             var self = this;
             setTimeout(function() {
-                attrs.image = attrs.candidates[0].image;
-                _shuffle = _.shuffle(attrs.candidates);
-                attrs.avatar = _shuffle[0];
-                attrs.pk1 = _shuffle[1];
-                attrs.pk2 = _shuffle[2];
-                self.renderTemplate(attrs);
+                self.renderTemplate(self.attrs);
+                self.renderPk();
             }, 250);
+            this.$el.addClass('animate');
             return this;
+        },
+        renderPk: function() {
+            var _shuffle = _.shuffle(this.attrs.candidates);
+            var pk1 = this.templatePkItem(_shuffle[0]),
+                pk2 = this.templatePkItem(_shuffle[1]);
+            var $pkBox = this.$('.pk-box');
+            $pkBox.children().animate({
+                opacity: 0
+            }, 500, function() {
+                $pkBox.css({opacity: 1});
+                $pkBox.html([pk1, pk2]);
+            });
         },
         pk: function(e) {
             var $pkItem = $(e.currentTarget);
             $pkItem.removeClass('fail').addClass('win')
-                   .siblings().removeClass('win').addClass('fail');
+            $pkItem.siblings().removeClass('win').addClass('fail');
+            var self = this;
+            setTimeout(function() {
+                self.renderPk();
+            }, 500);
         }
     });
     
@@ -66,7 +81,12 @@ $(function() {
             };
         },
         renderTopic: function() {
-            oneTopic.pick(this.views.topic.render);
+            var self = this;
+            oneTopic.pick(function(attrs) {
+                var topicView = self.views.topic;
+                topicView.attrs = attrs;
+                topicView.render();
+            });
         },
         render: function() {
             this.renderTopic();
