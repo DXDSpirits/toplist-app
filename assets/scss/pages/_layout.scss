@@ -116,6 +116,7 @@ $navbar-height: 44px;
 }
 
 .header-btn {
+    cursor: pointer;
     position: absolute;
     top: 0;
     height: 60px;
@@ -130,7 +131,7 @@ $navbar-height: 44px;
         font-size: $navbar-height * 0.8;
         line-height: $navbar-height;
     }
-    &.pressed p, p.pressed {
+    &:active, &:hover {
         color: #aaa;
     }
 }
