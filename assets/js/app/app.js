@@ -158,9 +158,9 @@ TopApp.initAjaxEvents = function() {
 TopApp.initGa = function() {
     var clientId = TopApp.TokenAuth.get() ? TopApp.TokenAuth.get() : window.device.uuid;
     if (clientId) {
-        ga('create', 'UA-40624648-3', { 'storage': 'none', 'clientId': clientId });
+        ga('create', 'UA-49749641-1', { 'storage': 'none', 'clientId': clientId });
     } else {
-        ga('create', 'UA-40624648-3', { 'cookieDomain': 'none' });
+        ga('create', 'UA-49749641-1', { 'cookieDomain': 'none' });
     }
 };
 
