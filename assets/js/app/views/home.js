@@ -27,7 +27,8 @@ $(function() {
     
     var TopicsView = TopApp.View.extend({
         events: {
-            'click .pk-item': 'pk',
+            'click .pk-item': 'viewImage',
+            'click .pk-item .fa': 'pk',
             'webkitAnimationEnd': 'flipEnd'
         },
         template: TPL['one-topic-page'],
@@ -61,13 +62,18 @@ $(function() {
             });
         },
         pk: function(e) {
-            var $pkItem = $(e.currentTarget);
+            if (e.stopPropagation) e.stopPropagation();
+            var $pkItem = $(e.currentTarget).closest('.pk-item');
             $pkItem.removeClass('fail').addClass('win')
             $pkItem.siblings().removeClass('win').addClass('fail');
             var self = this;
             setTimeout(function() {
                 self.renderPk();
             }, 500);
+        },
+        viewImage: function(e) {
+            var $pkItem = $(e.currentTarget);
+            $pkItem.toggleClass('fullscreen');
         }
     });
     
