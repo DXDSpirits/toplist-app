@@ -32,7 +32,6 @@ TopApp.initDevice = function() {
         // Just Fine
     } else if(/MicroMessenger/i.test(navigator.userAgent)) {
         window.device = { platform: 'Weixin' };
-        $('title').append(' ' + $('meta[name=description]').attr('content'));
     } else {
         window.device = { platform: 'WebApp' };
     }
