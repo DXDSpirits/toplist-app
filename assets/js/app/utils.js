@@ -1,9 +1,9 @@
-TopApp.isCordova = function() {
+App.isCordova = function() {
     return device.cordova;
 };
 
-TopApp.showConfirmDialog = function(title, content, onConfirm) {
-    var dialog = new (TopApp.View.extend({
+App.showConfirmDialog = function(title, content, onConfirm) {
+    var dialog = new (App.View.extend({
         className: 'dialog confirm-dialog',
         template: TPL['confirm-dialog'],
         events: {
@@ -34,16 +34,16 @@ TopApp.showConfirmDialog = function(title, content, onConfirm) {
     dialog.render();
 };
 
-TopApp.showNativConfirmDialog = function(title, content, onConfirm) {
+App.showNativConfirmDialog = function(title, content, onConfirm) {
     if (navigator.notification && _.isFunction(navigator.notification.confirm)) {
         var callback = function(button) { if (button == 2 && onConfirm) onConfirm(); };
-        navigator.notification.confirm(content, callback, title, [TopApp._('Cancel'), TopApp._('Confirm')]);
+        navigator.notification.confirm(content, callback, title, [App._('Cancel'), App._('Confirm')]);
     } else {
         if (confirm(content) == true) onConfirm();
     }
 };
 
-TopApp.sendWeixinMsg = function(content) {
+App.sendWeixinMsg = function(content) {
     var command = [content];
     var success = function() {}, fail = function() {};
     if (window.Cordova) {
@@ -51,7 +51,7 @@ TopApp.sendWeixinMsg = function(content) {
     }
 };
 
-TopApp.shareToMoments = function(url, content, pic) {
+App.shareToMoments = function(url, content, pic) {
     var command = [url, content, content, pic];
     var success = function() {};
     var fail = function() {};
@@ -60,9 +60,9 @@ TopApp.shareToMoments = function(url, content, pic) {
     }
 };
 
-TopApp.loadImage = function(img, src, options) {
+App.loadImage = function(img, src, options) {
     options = options || {};
-    if (TopApp.isCordova() && options.src_local) img.attr('src', options.src_local);
+    if (App.isCordova() && options.src_local) img.attr('src', options.src_local);
     var ratio = window.devicePixelRatio ? window.devicePixelRatio: 2;
     var width = options.width || parseInt($('body').innerWidth());
 	var height = options.height;
@@ -75,9 +75,9 @@ TopApp.loadImage = function(img, src, options) {
     image.src = image_src;
 };
 
-TopApp.loadBgImage = function(el, src, options) {
+App.loadBgImage = function(el, src, options) {
 	options = options || {};
-	if (TopApp.isCordova() && options.src_local) el.css('background-image', 'url(' + options.src_local + ')');
+	if (App.isCordova() && options.src_local) el.css('background-image', 'url(' + options.src_local + ')');
 	var ratio = window.devicePixelRatio || 2;
 	var width = options.width || parseInt($('body').innerWidth());
 	var height = options.height;
@@ -90,9 +90,9 @@ TopApp.loadBgImage = function(el, src, options) {
     image.src = image_src;
 };
 
-TopApp.calculateDistance = function(lat, lon) {
+App.calculateDistance = function(lat, lon) {
     var lat1=lat*Math.PI/18000000, lon1 = lon*Math.PI/18000000;
-    var lat2=TopApp.coords.latitude*Math.PI/180, lon2=TopApp.coords.longitude*Math.PI/180;
+    var lat2=App.coords.latitude*Math.PI/180, lon2=App.coords.longitude*Math.PI/180;
     var R = 6371;
     var x = (lon2-lon1) * Math.cos((lat1+lat2)/2);
     var y = (lat2-lat1);
@@ -104,14 +104,14 @@ TopApp.calculateDistance = function(lat, lon) {
     }
 };
 
-TopApp.sendGaPageView = function(page) {
+App.sendGaPageView = function(page) {
     ga('send', 'pageview', page);
 };
 
-TopApp.sendGaEvent = function(category, action, label, value) {
+App.sendGaEvent = function(category, action, label, value) {
     ga('send', 'event', category, action, label, value);
 };
 
-TopApp.sendGaSocial = function(network, action, target) {
+App.sendGaSocial = function(network, action, target) {
     ga('send', 'social', network, action, target);
 };

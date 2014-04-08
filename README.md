@@ -50,11 +50,11 @@ Development stuff
 
 			grunt templates
 
-	- Concat JavaScript files in `assets/js/app/*` to generate `assets/js/mw-app.js`
+	- Concat JavaScript files in `assets/js/app/*` to generate `assets/js/app.js`
 
 			grunt concat
 
-	- Minify JavaScript files in `assets/js/plugin/*` and `assets/js/mw-app.js` to generate `www/assets/js/plugin/*` and `assets/js/mw-app.js`
+	- Minify JavaScript files in `assets/js/plugin/*` and `assets/js/app.js` to generate `www/assets/js/plugin/*` and `assets/js/app.js`
 
 			grunt uglify
 

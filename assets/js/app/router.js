@@ -1,52 +1,52 @@
 
 /********************************** Router **********************************/
 
-TopApp.history = {
-	active: TopApp.Pages.Home,
+App.history = {
+	active: App.Pages.Home,
 	stack: []
 };
 
-TopApp.Router = new (Backbone.Router.extend({
+App.Router = new (Backbone.Router.extend({
 	initialize: function(){
 		this.route('', 'index');
 		this.route(/^home(?:\/topic(\d+))?$/, 'home');
 		this.route(/^ranking(?:\/topic(\d+))?$/, 'ranking');
 	},
 	index: function() {
-        TopApp.Pages.Home.go(); TopApp.history.active = TopApp.Pages.Home;
+        App.Pages.Home.go(); App.history.active = App.Pages.Home;
 	},
-	home: function(tid) { TopApp.Pages.Home.go({topicId: tid}); TopApp.history.active = TopApp.Pages.Home; },
-	ranking: function(tid) { TopApp.Pages.Ranking.go({topicId: tid}); TopApp.history.active = TopApp.Pages.Ranking; },
+	home: function(tid) { App.Pages.Home.go({topicId: tid}); App.history.active = App.Pages.Home; },
+	ranking: function(tid) { App.Pages.Ranking.go({topicId: tid}); App.history.active = App.Pages.Ranking; },
 }));
 
-TopApp.goToPath = function(path) {
-	TopApp.Router.navigate(path, {trigger: true});
+App.goToPath = function(path) {
+	App.Router.navigate(path, {trigger: true});
 };
 
-TopApp.goTo = function(pageName, options) {
-	var next = TopApp.Pages[pageName];
-	(options || (options = {})).caller = options.caller || TopApp.history.active;
-	if (next != TopApp.history.active) {
-	    TopApp.abortAllAjax();
-		TopApp.history.stack.push(TopApp.history.active);
-		TopApp.history.active = next;
-		TopApp.history.active.go(options);
+App.goTo = function(pageName, options) {
+	var next = App.Pages[pageName];
+	(options || (options = {})).caller = options.caller || App.history.active;
+	if (next != App.history.active) {
+	    App.abortAllAjax();
+		App.history.stack.push(App.history.active);
+		App.history.active = next;
+		App.history.active.go(options);
 	}
-	if (pageName == 'Home') TopApp.history.stack.length = 0;
+	if (pageName == 'Home') App.history.stack.length = 0;
 };
 
-TopApp.refreshActivePage = function() {
-	TopApp.history.active.refresh();
+App.refreshActivePage = function() {
+	App.history.active.refresh();
 };
 
-TopApp.goBack = function() {
-    TopApp.abortAllAjax();
-	if (TopApp.history.stack.length > 0) {
-		var prev = TopApp.history.stack.pop();
-		TopApp.history.active = prev;
-		TopApp.history.active.showPage(true);
-	} else if (TopApp.history.active != TopApp.Pages.Home) {
-		TopApp.history.active = TopApp.Pages.Home;
-		TopApp.Pages.Home.go();
+App.goBack = function() {
+    App.abortAllAjax();
+	if (App.history.stack.length > 0) {
+		var prev = App.history.stack.pop();
+		App.history.active = prev;
+		App.history.active.showPage(true);
+	} else if (App.history.active != App.Pages.Home) {
+		App.history.active = App.Pages.Home;
+		App.Pages.Home.go();
 	}
 };

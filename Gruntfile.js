@@ -13,16 +13,17 @@ module.exports = function(grunt) {
                     'assets/js/app/models/*.js',
                     'assets/js/app/view.js',
                     'assets/js/app/router.js',
+                    'assets/js/app/event.js',
                     'assets/js/app/_close.js',
                     'assets/js/app/views/*.js',
                 ],
-                dest: '<%= cfg.path.dest %>/assets/js/mw-app.js'
+                dest: '<%= cfg.path.dest %>/assets/js/app.js'
             }
         },
         uglify: {
             mwapp: {
-                src: '<%= cfg.path.dest %>/assets/js/mw-app.js',
-                dest: '<%= cfg.path.dest %>/assets/js/mw-app.min.js'
+                src: '<%= cfg.path.dest %>/assets/js/app.js',
+                dest: '<%= cfg.path.dest %>/assets/js/app.min.js'
             },
             plugins: {
                 src: [
@@ -72,9 +73,7 @@ module.exports = function(grunt) {
                     'assets/img/**/*',
                     'assets/fonts/**/*',
                     'assets/js/vendor/**/*',
-                    '.htaccess',
-                    'config.xml',
-                    'cordova.js'
+                    '.htaccess'
                 ],
                 dest: '<%= cfg.path.dest %>'
             }
@@ -89,8 +88,7 @@ module.exports = function(grunt) {
                 tasks: ['uglify:plugins']
             },
             staticfiles: {
-                files: ['assets/css/**/*', 'assets/img/**/*', 'assets/fonts/**/*', 'assets/js/vendor/**/*', 
-                        'config.xml', '.htaccess', 'cordova.js'],
+                files: ['assets/css/**/*', 'assets/img/**/*', 'assets/fonts/**/*', 'assets/js/vendor/**/*', '.htaccess'],
                 tasks: ['copy']
             },
             stylesheets_all: {

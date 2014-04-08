@@ -1,5 +1,5 @@
 
-TopApp.Collection = Backbone.Collection.extend({
+App.Collection = Backbone.Collection.extend({
 	parse: function(response) {
 		if (response.results != null) {
 			this.count = response.count;
@@ -41,7 +41,7 @@ TopApp.Collection = Backbone.Collection.extend({
 	},
 });
 
-TopApp.Model = Backbone.Model.extend({
+App.Model = Backbone.Model.extend({
 	fetch: function(options) {
 		options = options || {};
 		if (options.delay) {

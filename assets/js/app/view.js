@@ -1,5 +1,5 @@
 
-TopApp.View = Backbone.View.extend({
+App.View = Backbone.View.extend({
     initialize: function() {
         if (this.initView) this.initView();
     },
@@ -18,7 +18,7 @@ TopApp.View = Backbone.View.extend({
     }
 });
 
-TopApp.ModelView = TopApp.View.extend({
+App.ModelView = App.View.extend({
     initView: function() {
         if (this.model) {
             this.listenTo(this.model, 'change', this.render);
@@ -40,8 +40,8 @@ TopApp.ModelView = TopApp.View.extend({
     }
 });
 
-TopApp.CollectionView = TopApp.View.extend({
-    ModelView: TopApp.ModelView,
+App.CollectionView = App.View.extend({
+    ModelView: App.ModelView,
     initView: function() {
         if (this.collection) {
             this.listenTo(this.collection, 'reset', this.addAll);
@@ -78,7 +78,7 @@ TopApp.CollectionView = TopApp.View.extend({
     }
 });
 
-TopApp.PageView = TopApp.View.extend({
+App.PageView = App.View.extend({
     events: {
         'click .header-btn-left': 'onClickLeftBtn',
         'click .header-btn-right': 'onClickRightBtn'
@@ -106,7 +106,7 @@ TopApp.PageView = TopApp.View.extend({
         });
         if (this.initPage) this.initPage();
     },
-    onClickLeftBtn: function() { TopApp.goBack(); },
+    onClickLeftBtn: function() { App.goBack(); },
     onClickRightBtn: function() {},
     initPageNav: function(page, collection) {
         var fetching = false;
@@ -175,7 +175,7 @@ TopApp.PageView = TopApp.View.extend({
                 clearTimeout(nextPageOpenTimeout);
                 $nextPage.removeClass('view-next').removeClass('view-next-back');
                 $nextPage.find('input').blur();
-                TopApp.sendGaPageView($nextPage.attr('id')); // Google Analytics
+                App.sendGaPageView($nextPage.attr('id')); // Google Analytics
                 window.scrollTo(0, 0);
             };
             $nextPage.removeClass('view-hidden');

@@ -1,16 +1,16 @@
 $(function() {
-    var TopicsView = TopApp.ModelView.extend({
+    var TopicsView = App.ModelView.extend({
         template: TPL['topic-ranking']
     });
     
-    TopApp.Pages.Ranking = new (TopApp.PageView.extend({
+    App.Pages.Ranking = new (App.PageView.extend({
         events: {
             'click .header-btn-left': 'onClickLeftBtn',
             'click .header-btn-right': 'onClickRightBtn',
             'click .candidate': 'viewImage'
         },
         initPage: function() {
-            this.topic = new TopApp.Models.Topic();
+            this.topic = new App.Models.Topic();
             this.views = {
                 topic: new TopicsView({
                     el: this.$('.wrapper'),

@@ -1,5 +1,5 @@
 
-window.TopApp = new (Backbone.View.extend({
+window.App = new (Backbone.View.extend({
     
     Version: 1.0,
     
@@ -17,17 +17,17 @@ window.TopApp = new (Backbone.View.extend({
     },
     
     start: function() {
-        TopApp.initDevice();
-        TopApp.initAjaxEvents();
-        //TopApp.initGeolocation();
-        TopApp.initSync();
-        TopApp.initGa();
+        App.initDevice();
+        App.initAjaxEvents();
+        //App.initGeolocation();
+        App.initSync();
+        App.initGa();
         Backbone.history.start();
-        TopApp.fixViewport();
+        App.fixViewport();
     }
 }))({el: document.body});
 
-TopApp.initDevice = function() {
+App.initDevice = function() {
     if (window.device) {
         // Just Fine
     } else if(/MicroMessenger/i.test(navigator.userAgent)) {
@@ -41,7 +41,7 @@ TopApp.initDevice = function() {
     FastClick.attach(document.body);
 };
 
-TopApp.fixViewport = function() {
+App.fixViewport = function() {
     var wrapperOffset = 44;
     if (window.device.platform === 'iOS' && parseFloat(window.device.version) >= 7.0) {
         wrapperOffset += 20;
@@ -58,24 +58,24 @@ TopApp.fixViewport = function() {
     }
 };
 
-TopApp.initGeolocation = function(callback) {
+App.initGeolocation = function(callback) {
     var onSuccess = function(position) {
-        TopApp.coords.latitude = position.coords.latitude;
-        TopApp.coords.longitude = position.coords.longitude;
+        App.coords.latitude = position.coords.latitude;
+        App.coords.longitude = position.coords.longitude;
         if (callback) callback();
     };
     var onError = function() {
         if (callback) callback();
     };
-    TopApp.coords = { longitude: 121.491, latitude: 31.233 };
+    App.coords = { longitude: 121.491, latitude: 31.233 };
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
 };
 
-TopApp.initSync = function() {
+App.initSync = function() {
     var authToken = localStorage.getItem('auth-token');
     var originalSync = Backbone.sync;
     Backbone.sync = function(method, model, options) {
-        options.timeout = options.timeout || TopApp.configs.ajaxTimeout;
+        options.timeout = options.timeout || App.configs.ajaxTimeout;
         options.headers = options.headers || {};
         if (authToken) {
             _.extend(options.headers, { 'Authorization': 'Token ' + authToken });
@@ -85,7 +85,7 @@ TopApp.initSync = function() {
         }
         return originalSync.call(model, method, model, options);
     };
-    TopApp.TokenAuth = {
+    App.TokenAuth = {
         get: function() {
             return _.clone(authToken);
         },
@@ -100,7 +100,7 @@ TopApp.initSync = function() {
     };
 };
 
-TopApp.initAjaxEvents = function() {
+App.initAjaxEvents = function() {
     var timeout = 1000;
     var xhrPool = [];
     $(document).ajaxStart(function() {
@@ -122,8 +122,8 @@ TopApp.initAjaxEvents = function() {
                     $('#apploader .ajax-error').html(text).addClass('hidden');
                 }, (timeout = 2000)/* + 500*/);
             }
-            TopApp.TokenAuth.clear();
-            TopApp.Pages.MemberLogin.go({ ref: TopApp.history.active });
+            App.TokenAuth.clear();
+            App.Pages.MemberLogin.go({ ref: App.history.active });
         } else if (settings.type == 'GET' && jqxhr.statusText != 'abort') {
             $('#apploader .ajax-error').removeClass('hidden');
             setTimeout(function() {
@@ -144,7 +144,7 @@ TopApp.initAjaxEvents = function() {
             if (index > -1) xhrPool.splice(index, 1);
         }
     });
-    TopApp.abortAllAjax = function() {
+    App.abortAllAjax = function() {
         _.each(xhrPool, function(jqXHR) { jqXHR.abort(); });
         xhrPool.length = 0;
         setTimeout(function() {
@@ -154,8 +154,8 @@ TopApp.initAjaxEvents = function() {
     };
 };
 
-TopApp.initGa = function() {
-    var clientId = TopApp.TokenAuth.get() ? TopApp.TokenAuth.get() : window.device.uuid;
+App.initGa = function() {
+    var clientId = App.TokenAuth.get() ? App.TokenAuth.get() : window.device.uuid;
     if (clientId) {
         ga('create', 'UA-49749641-1', { 'storage': 'none', 'clientId': clientId });
     } else {
@@ -163,9 +163,9 @@ TopApp.initGa = function() {
     }
 };
 
-TopApp.handleError = function(err) {
+App.handleError = function(err) {
     try {
-        var error = new TopApp.Models.ClientError();
+        var error = new App.Models.ClientError();
         error.save({message: err.message, detail: err.stack}, {global: false});
         console.error(err.message);
     } catch (e) {}
@@ -173,9 +173,9 @@ TopApp.handleError = function(err) {
 
 window.onerror = function(message, file, line, column, errorObj) {
     try {
-        TopApp.abortAllAjax();
+        App.abortAllAjax();
         var detail = errorObj && errorObj.stack ? errorObj.stack : [file, line, column].join(':');
-        var error = new TopApp.Models.ClientError();
+        var error = new App.Models.ClientError();
         error.save({message: message, detail: detail}, {global: false});
         console.error(message, detail);
     } catch (e) {}

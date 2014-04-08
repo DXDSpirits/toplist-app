@@ -1,14 +1,14 @@
 
-TopApp.Models.Topic = TopApp.Model.extend({
-	urlRoot: TopApp.configs.APIHost + '/topics/topic/'
+App.Models.Topic = App.Model.extend({
+	urlRoot: App.configs.APIHost + '/topics/topic/'
 });
 
-TopApp.Collections.Topics = TopApp.Collection.extend({
-    url: TopApp.configs.APIHost + '/topics/topic/',
-    model: TopApp.Models.Topic
+App.Collections.Topics = App.Collection.extend({
+    url: App.configs.APIHost + '/topics/topic/',
+    model: App.Models.Topic
 });
 
-TopApp.Data.Topics = new TopApp.Collections.Topics();
+App.Data.Topics = new App.Collections.Topics();
 
 /*
 var candidates_example = [
@@ -23,7 +23,7 @@ var candidates_example = [
     {id: 9, image: 'assets/img/candidates/9.jpg', description: '没什么可以说的'},
     {id: 10, image: 'assets/img/candidates/10.jpg', description: '没什么可以说的'},
 ];
-TopApp.Data.Topics.set([
+App.Data.Topics.set([
     {
         id: 1,
         title: '十大最好喝的咖啡馆',

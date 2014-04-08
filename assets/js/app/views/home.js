@@ -1,7 +1,7 @@
 $(function() {
     
     var OneTopic = function() {
-        this.topics = new TopApp.Collections.Topics();
+        this.topics = new App.Collections.Topics();
         this.i = 0;
     };
     
@@ -23,7 +23,7 @@ $(function() {
     
     var oneTopic = new OneTopic();
     
-    var TopicsView = TopApp.View.extend({
+    var TopicsView = App.View.extend({
         events: {
             'click .pk-item .fa': 'pk',
             'click .skip-pk': 'renderPk',
@@ -74,7 +74,7 @@ $(function() {
         }
     });
     
-    TopApp.Pages.Home = new (TopApp.PageView.extend({
+    App.Pages.Home = new (App.PageView.extend({
         events: {
             'click .header-btn-left': 'viewRanking',
             'click .header-btn-right': 'renderTopic',
@@ -86,7 +86,7 @@ $(function() {
             };
         },
         viewRanking: function() {
-            TopApp.goTo('Ranking', {topic: this.views.topic.attrs});
+            App.goTo('Ranking', {topic: this.views.topic.attrs});
         },
         viewImage: function(e) {
             var $pkItem = $(e.currentTarget);
