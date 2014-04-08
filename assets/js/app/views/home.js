@@ -3,7 +3,6 @@ $(function() {
     var OneTopic = function() {
         this.topics = new TopApp.Collections.Topics();
         this.i = 0;
-        this.topics_json = null;
     };
     
     OneTopic.prototype.pick = function(callback) {
@@ -11,8 +10,7 @@ $(function() {
             callback && callback(this.topics_json[(this.i++)]);
         } else {
             var self = this;
-            var method = this.topics_json ? 'fetchNext' : 'fetch';
-            this.topics[method]({
+            this.topics.fetch({
                 reset: true,
                 success: function(collection) {
                     self.topics_json = _.shuffle(collection.toJSON());
