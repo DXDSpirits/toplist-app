@@ -76,8 +76,8 @@ $(function() {
     
     App.Pages.Home = new (App.PageView.extend({
         events: {
-            'click .header-btn-left': 'viewRanking',
-            'click .header-btn-right': 'renderTopic',
+            'click .header-btn-left': 'onClickLeftBtn',
+            'click .header-btn-right': 'onClickRightBtn',
             'click .pk-item': 'viewImage'
         },
         initPage: function() {
@@ -87,8 +87,11 @@ $(function() {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
         },
-        viewRanking: function() {
+        onClickLeftBtn: function() {
             App.goTo('Ranking', {topic: this.topicAttrs});
+        },
+        onClickRightBtn: function() {
+            this.renderTopic();
         },
         getWxMessage: function() {
             var message = {
