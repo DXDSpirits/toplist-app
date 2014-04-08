@@ -9,12 +9,14 @@ TopApp.history = {
 TopApp.Router = new (Backbone.Router.extend({
 	initialize: function(){
 		this.route('', 'index');
-		this.route(/^home(?:\/l(\d+))?$/, 'home');
+		this.route(/^home(?:\/topic(\d+))?$/, 'home');
+		this.route(/^ranking(?:\/topic(\d+))?$/, 'ranking');
 	},
 	index: function() {
         TopApp.Pages.Home.go(); TopApp.history.active = TopApp.Pages.Home;
 	},
-	home: function(lid) { TopApp.Pages.Home.go({listId: lid}); TopApp.history.active = TopApp.Pages.Home; },
+	home: function(tid) { TopApp.Pages.Home.go({topicId: tid}); TopApp.history.active = TopApp.Pages.Home; },
+	ranking: function(tid) { TopApp.Pages.Ranking.go({topicId: tid}); TopApp.history.active = TopApp.Pages.Ranking; },
 }));
 
 TopApp.goToPath = function(path) {

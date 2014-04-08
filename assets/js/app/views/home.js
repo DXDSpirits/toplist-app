@@ -78,6 +78,7 @@ $(function() {
     
     TopApp.Pages.Home = new (TopApp.PageView.extend({
         events: {
+            'click .header-btn-left': 'viewRanking',
             'click .header-btn-right': 'renderTopic',
             'click .pk-item': 'viewImage'
         },
@@ -85,6 +86,9 @@ $(function() {
             this.views = {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
+        },
+        viewRanking: function() {
+            TopApp.goTo('Ranking', {topic: this.views.topic.attrs});
         },
         viewImage: function(e) {
             var $pkItem = $(e.currentTarget);
