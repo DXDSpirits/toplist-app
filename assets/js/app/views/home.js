@@ -28,6 +28,7 @@ $(function() {
     var TopicsView = TopApp.View.extend({
         events: {
             'click .pk-item .fa': 'pk',
+            'click .skip-pk': 'renderPk',
             'webkitAnimationEnd': 'flipEnd'
         },
         template: TPL['one-topic-page'],
@@ -53,6 +54,9 @@ $(function() {
             var pk1 = this.templatePkItem(_shuffle[0]),
                 pk2 = this.templatePkItem(_shuffle[1]);
             var $pkBox = this.$('.pk-box');
+            var $refresh = this.$('.skip-pk .fa');
+            $refresh.removeClass('invisible');
+            setTimeout(function() { $refresh.addClass('invisible'); }, 1000);
             $pkBox.children().animate({
                 opacity: 0
             }, 200, function() {
@@ -94,6 +98,7 @@ $(function() {
             }
         },
         renderTopic: function() {
+            this.$('.fullscreen').addClass('invisible');
             var self = this;
             oneTopic.pick(function(attrs) {
                 var topicView = self.views.topic;

@@ -10,7 +10,7 @@
     .topic-wrapper {
         > header {
             padding: 10px;
-            background: rgba(255, 255, 255, .5);
+            background: rgba(255, 255, 255, .9);
             min-height: 200px;
         }
         .pk-icon {
@@ -20,16 +20,19 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, .5);
         border-radius: 5px;
         background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
+        background-position: center 20px;
+        background-size: auto 200px;
         overflow: hidden;
         position: relative;
     }
     .pk-box {
-        background: rgba(255, 255, 255, .5);
+        background: rgba(255, 255, 255, .9);
         width: 100%;
         position: relative;
         @include clearfix();
+    }
+    .skip-pk {
+        cursor: pointer;
     }
     .pk-item {
         cursor: pointer;
@@ -59,13 +62,13 @@
         &.fail .fa {
             @include rotate(-180deg);
         }
-        border-top: 2px solid #fff;
+        border-top: 2px solid rgba(0, 0, 0, .3);
         &:first-child {
-            border-right: 1px solid #fff;
+            border-right: 1px solid rgba(0, 0, 0, .3);
             @include animation(slideinfromleft .5s ease-in-out);
         }
         &:last-child {
-            border-left: 1px solid #fff;
+            border-left: 1px solid rgba(0, 0, 0, .3);
             @include animation(slideinfromright .5s ease-in-out);
         }
     }
