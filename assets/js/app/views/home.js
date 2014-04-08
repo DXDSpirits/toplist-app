@@ -27,7 +27,6 @@ $(function() {
     
     var TopicsView = TopApp.View.extend({
         events: {
-            'click .pk-item': 'viewImage',
             'click .pk-item .fa': 'pk',
             'webkitAnimationEnd': 'flipEnd'
         },
@@ -56,7 +55,7 @@ $(function() {
             var $pkBox = this.$('.pk-box');
             $pkBox.children().animate({
                 opacity: 0
-            }, 500, function() {
+            }, 200, function() {
                 $pkBox.css({opacity: 1});
                 $pkBox.html([pk1, pk2]);
             });
@@ -64,27 +63,35 @@ $(function() {
         pk: function(e) {
             if (e.stopPropagation) e.stopPropagation();
             var $pkItem = $(e.currentTarget).closest('.pk-item');
-            $pkItem.removeClass('fail').addClass('win')
+            $pkItem.removeClass('fail').addClass('win');
             $pkItem.siblings().removeClass('win').addClass('fail');
             var self = this;
             setTimeout(function() {
                 self.renderPk();
-            }, 500);
-        },
-        viewImage: function(e) {
-            var $pkItem = $(e.currentTarget);
-            $pkItem.toggleClass('fullscreen');
+            }, 1000);
         }
     });
     
     TopApp.Pages.Home = new (TopApp.PageView.extend({
         events: {
-            'click .header-btn-right': 'renderTopic'
+            'click .header-btn-right': 'renderTopic',
+            'click .pk-item': 'viewImage'
         },
         initPage: function() {
             this.views = {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
+        },
+        viewImage: function(e) {
+            var $pkItem = $(e.currentTarget);
+            var $fullscreen = this.$('.fullscreen');
+            if ($fullscreen.hasClass('invisible')) {
+                $fullscreen.css('background-image', $pkItem.css('background-image'));
+                $fullscreen.removeClass('invisible');
+                $fullscreen.one('click', function() {
+                    $(this).addClass('invisible');
+                });
+            }
         },
         renderTopic: function() {
             var self = this;

@@ -68,16 +68,20 @@
             border-left: 1px solid #fff;
             @include animation(slideinfromright .5s ease-in-out);
         }
-        &.fullscreen {
-            position: fixed;
-            z-index: 1000;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: contain;
-            background-color: #000;
-        }
+    }
+    .fullscreen {
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        background-color: #000;
+        @include transition(all .35s ease-in-out);
+        &.invisible { opacity: 0; }
     }
     .pk-title {
         background: rgba(0, 0, 0, .7);
