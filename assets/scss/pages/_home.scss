@@ -83,7 +83,7 @@
         background-position: center;
         background-size: contain;
         background-color: #000;
-        @include transition(all .35s ease-in-out);
+        @include transition(opacity .35s ease-in-out);
         &.invisible { opacity: 0; }
     }
     .pk-title {
