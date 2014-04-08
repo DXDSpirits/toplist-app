@@ -81,12 +81,25 @@ $(function() {
             'click .pk-item': 'viewImage'
         },
         initPage: function() {
+            _.bindAll(this, 'renderTopic');
+            this.topicAttrs = {};
             this.views = {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
         },
         viewRanking: function() {
-            App.goTo('Ranking', {topic: this.views.topic.attrs});
+            App.goTo('Ranking', {topic: this.topicAttrs});
+        },
+        getWxMessage: function() {
+            var message = {
+                img_url : App.makeUrl('/assets/img/pk-icon.png'),
+                img_width : "640",
+                img_height : "640",
+                link : App.makeUrl('#home/topic' + this.topicAttrs.id),
+                desc : this.topicAttrs.title + ' ' + this.topicAttrs.description,
+                title : "锐榜Top10/PK时间到"
+            };
+            return message;
         },
         viewImage: function(e) {
             var $pkItem = $(e.currentTarget);
@@ -99,16 +112,25 @@ $(function() {
                 });
             }
         },
-        renderTopic: function() {
-            var self = this;
-            oneTopic.pick(function(attrs) {
-                var topicView = self.views.topic;
-                topicView.attrs = attrs;
+        renderTopic: function(attrs) {
+            if (attrs) {
+                var topicView = this.views.topic;
+                this.topicAttrs = topicView.attrs = attrs;
                 topicView.render();
-            });
+            } else {
+                oneTopic.pick(this.renderTopic);
+            }
         },
         render: function() {
-            this.renderTopic();
+            if (this.options.topicId) {
+                var topic = new App.Models.Topic({id: this.options.topicId});
+                var self = this;
+                topic.fetch({success: function() {
+                    self.renderTopic(topic.toJSON());
+                }});
+            } else {
+                this.renderTopic();
+            }
         }
     }))({el: $("#view-home")});
 });

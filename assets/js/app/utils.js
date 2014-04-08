@@ -2,6 +2,10 @@ App.isCordova = function() {
     return device.cordova;
 };
 
+App.makeUrl = function(path) {
+    return 'http://' + location.host + (path[0] == '/' ? path : '/' + path);
+};
+
 App.showConfirmDialog = function(title, content, onConfirm) {
     var dialog = new (App.View.extend({
         className: 'dialog confirm-dialog',
