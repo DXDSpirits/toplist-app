@@ -97,9 +97,10 @@ TopApp.PageView = TopApp.View.extend({
                         'onClickLeftBtn', 'onClickRightBtn');
         var $el = this.$el;
         this.$('.wrapper').on('webkitAnimationEnd', function(e) {
-            if (e.originalEvent.animationName == "slideouttoleft") {
+            var animationName = e.originalEvent.animationName;
+            if (animationName == "slideouttoleft" || animationName == "slideouttoright") {
             	$el.trigger('pageClose');
-            } else if (e.originalEvent.animationName == "slideinfromright") {
+            } else if (animationName == "slideinfromright" || animationName == "slideinfromleft") {
             	$el.trigger('pageOpen');
             }
         });
@@ -153,17 +154,18 @@ TopApp.PageView = TopApp.View.extend({
         this.showPage();
     },
     reset: function() {},
-    showPage: function() {
+    showPage: function(back) {
         if (this.$el && this.$el.hasClass('view-hidden')) {
             var $curPage = $('.view:not(".view-hidden")');
             var curPageCloseTimeout;
             var closeCurPage = function() {
                 clearTimeout(curPageCloseTimeout);
-                $curPage.removeClass('view-prev');
+                $curPage.removeClass('view-prev').removeClass('view-prev-back');
                 $curPage.find('input').blur();
             };
             $curPage.addClass('view-hidden');
             $curPage.addClass('view-prev');
+            if (back) $curPage.addClass('view-prev-back');
             curPageCloseTimeout = setTimeout(closeCurPage, 1000);
             $curPage.one('pageClose', closeCurPage);
             
@@ -171,13 +173,14 @@ TopApp.PageView = TopApp.View.extend({
             var nextPageOpenTimeout;
             var openNextPage = function() {
                 clearTimeout(nextPageOpenTimeout);
-                $nextPage.removeClass('view-next');
+                $nextPage.removeClass('view-next').removeClass('view-next-back');
                 $nextPage.find('input').blur();
                 TopApp.sendGaPageView($nextPage.attr('id')); // Google Analytics
                 window.scrollTo(0, 0);
             };
             $nextPage.removeClass('view-hidden');
             $nextPage.addClass('view-next');
+            if (back) $nextPage.addClass('view-next-back');
             nextPageOpenTimeout = setTimeout(openNextPage, 1000);
             $nextPage.one('pageOpen', openNextPage);
         }

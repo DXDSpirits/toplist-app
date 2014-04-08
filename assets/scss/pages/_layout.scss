@@ -44,9 +44,17 @@ $navbar-height: 44px;
     -webkit-animation-fill-mode: forwards;
 }
 
+.view.view-next.view-next-back > .wrapper {
+    @include animation(slideinfromleft .35s linear);
+}
+
 .view.view-prev > .wrapper {
     @include animation(slideouttoleft .35s linear);
     -webkit-animation-fill-mode: forwards;
+}
+
+.view.view-prev.view-prev-back > .wrapper {
+    @include animation(slideouttoright .35s linear);
 }
 
 #apploader {

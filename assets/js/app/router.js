@@ -44,7 +44,7 @@ TopApp.goBack = function() {
 	if (TopApp.history.stack.length > 0) {
 		var prev = TopApp.history.stack.pop();
 		TopApp.history.active = prev;
-		TopApp.history.active.showPage();
+		TopApp.history.active.showPage(true);
 	} else if (TopApp.history.active != TopApp.Pages.Home) {
 		TopApp.history.active = TopApp.Pages.Home;
 		TopApp.Pages.Home.go();
