@@ -1,0 +1,38 @@
+#view-ranking {
+    .wellbox {
+        margin: 15px;
+        padding: 15px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    .candidate {
+        cursor: pointer;
+        height: 100px;
+        padding-left: 120px;
+        position: relative;
+        .avatar {
+            position: absolute;
+            @include square(100px);
+            top: 0;
+            left: 0;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+    }
+    .fullscreen {
+        position: absolute;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        background-color: #000;
+        @include transition(all .35s ease-in-out);
+        &.invisible { opacity: 0; }
+    }
+}

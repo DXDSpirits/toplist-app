@@ -102,7 +102,6 @@ $(function() {
             }
         },
         renderTopic: function() {
-            this.$('.fullscreen').addClass('invisible');
             var self = this;
             oneTopic.pick(function(attrs) {
                 var topicView = self.views.topic;

@@ -4,6 +4,11 @@ $(function() {
     });
     
     TopApp.Pages.Ranking = new (TopApp.PageView.extend({
+        events: {
+            'click .header-btn-left': 'onClickLeftBtn',
+            'click .header-btn-right': 'onClickRightBtn',
+            'click .candidate': 'viewImage'
+        },
         initPage: function() {
             this.topic = new TopApp.Models.Topic();
             this.views = {
@@ -12,6 +17,17 @@ $(function() {
                     model: this.topic
                 })
             };
+        },
+        viewImage: function(e) {
+            var $avatar = $(e.currentTarget).find('.avatar');
+            var $fullscreen = this.$('.fullscreen');
+            if ($fullscreen.hasClass('invisible')) {
+                $fullscreen.css('background-image', $avatar.css('background-image'));
+                $fullscreen.removeClass('invisible');
+                $fullscreen.one('click', function() {
+                    $(this).addClass('invisible');
+                });
+            }
         },
         render: function() {
             if (this.options.topicId) {

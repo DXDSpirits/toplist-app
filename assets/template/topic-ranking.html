@@ -1,5 +1,11 @@
-<h1>{{title}}</h1>
-<h2>{{description}}</h2>
+<div class="wellbox">
+    <h4>{{title}}</h4>
+    <p>{{description}}</p>
+</div>
+
 {{#candidates}}
+<div class="wellbox candidate">
+    <div class="avatar" style="background-image:url({{picture}})"></div>
     <p>{{title}}</p>
+</div>
 {{/candidates}}
