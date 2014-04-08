@@ -19,7 +19,7 @@ window.TopApp = new (Backbone.View.extend({
     start: function() {
         TopApp.initDevice();
         TopApp.initAjaxEvents();
-        TopApp.initGeolocation();
+        //TopApp.initGeolocation();
         TopApp.initSync();
         TopApp.initGa();
         Backbone.history.start();
