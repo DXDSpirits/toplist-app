@@ -34,3 +34,9 @@ App.Collections.Votes = App.Collection.extend({
         this.add(vote);
     }
 });
+
+App.Models.VoteTime = App.Model.extend({});
+App.Collections.VoteTimes = Backbone.Collection.extend({
+    url: App.configs.APIHost + '/topics/topic/',
+    model: App.Models.VoteTime
+});

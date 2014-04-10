@@ -31,13 +31,35 @@ $(function() {
         },
         template: TPL['one-topic-page'],
         templatePkItem: TPL['pk-item'],
-        initView: function() {},
+        initView: function() {
+            //_.bindAll(this, 'get_vote_times');
+            this.vote_times = new App.Collections.VoteTimes();
+            this.pk_group_list = null;
+        },
         flipEnd: function(e) {
             if (e.originalEvent.animationName == "flip") {
                 this.$el.removeClass('animate');
             }
         },
         makeList:function(list){
+            var self=this;
+            if(_.isEmpty(list)){
+                var list = this.generateRandomList(this.attrs.candidates);
+            }
+            else{
+                var list = this.generateSortedList(this.attrs.candidates,list);
+            }
+            self.pk_group_list = list;
+        },
+        get_vote_times:function(c,sortList){
+            var id1 = c[0].id,id2 = c[1].id;
+            var index = _.find(sortList, function(e){
+                return (e.condidate1 == id1&&e.condidate2 == id2)||(e.condidate1 == id2&&e.condidate2 == id1);
+            });
+            return 'undefined'==typeof(index)?0:index['times'];
+        },
+        generateSortedList:function(list,sortList){
+            var self = this;
             if(!_.isArray(list)||list.length<2)return [];
             var dyadic_list = [];
             for(var i in list){
@@ -47,17 +69,33 @@ $(function() {
                     ]);
                 }
             }
-            _.shuffle(dyadic_list);
-            //耗时???
             return _.sortBy(dyadic_list,function(c){
-                return c[0].vote_times+c[1].vote_times;
+                return self.get_vote_times(c,sortList);
             });
         },
-        render: function() {
-            this.attrs.avatar = _.sample(this.attrs.candidates, 1)[0].picture;
+        generateRandomList:function(list){
             var self = this;
-            self.pk_group_list=null;
-            self.pk_group_list=this.makeList(this.attrs.candidates);
+            if(!_.isArray(list)||list.length<2)return [];
+            var dyadic_list = [];
+            for(var i in list){
+                for(var index=parseInt(i)+1;index<list.length;index++){
+                    dyadic_list.push([
+                        list[i],list[index]
+                    ]);
+                }
+            }
+            return _.shuffle(dyadic_list);
+        },
+        render: function() {
+            var self = this;
+            self.attrs.avatar = _.sample(this.attrs.candidates, 1)[0].picture;
+            var vote_times = self.vote_times;
+            vote_times.fetch({
+                url: vote_times.url+self.attrs.id+'/vote_times/',
+                success: function(){
+                    self.makeList(vote_times.toJSON());
+                }
+            });
             self.pk_group_id=0;
             setTimeout(function() {
                 self.renderTemplate(self.attrs);
@@ -83,7 +121,7 @@ $(function() {
             var pk_group = this.pk_group_list[this.pk_group_id];
             if(!_.isArray(pk_group)||pk_group.length==0)return;
             this.pk_group_id++;
-            //if(this.pk_group_id==pk_group.length)show empty
+            if(this.pk_group_id==pk_group.length)this.pk_group_id=0;
             var pk1 = this.templatePkItem(pk_group[0]),
                 pk2 = this.templatePkItem(pk_group[1]);
             var $pkBox = this.$('.pk-box');
