@@ -31,6 +31,6 @@ App.Collections.Votes = App.Collection.extend({
             candidate2:cid2,
             draw:draw
         });
-        //this.add(vote);
+        this.add(vote);
     }
 });

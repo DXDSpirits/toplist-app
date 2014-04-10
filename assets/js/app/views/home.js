@@ -131,21 +131,21 @@ $(function() {
             this.views = {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
-            App.voteResult = this.voteResult = new App.Collections.Votes();
+            //App.voteResult = this.voteResult = new App.Collections.Votes();
         },
         onClickLeftBtn: function() {
             App.goTo('Ranking', {topic: this.topicAttrs});
         },
         onClickRightBtn: function() {
-            this.submitVotes();
+            //this.submitVotes();
             this.renderTopic();
         },
-        submitVotes:function(){
-            var voteResult=this.voteResult;
-            if (!voteResult.isEmpty()) {
-                voteResult.sendResult();
-            }
-        },
+        // submitVotes:function(){
+        //     var voteResult=this.voteResult;
+        //     if (!voteResult.isEmpty()) {
+        //         voteResult.sendResult();
+        //     }
+        // },
         getWxMessage: function() {
             var message = {
                 img_url : App.makeUrl('/assets/img/pk-icon.png'),
