@@ -1,6 +1,16 @@
 $(function() {
     var TopicsView = App.ModelView.extend({
-        template: TPL['topic-ranking']
+        template: TPL['topic-ranking'],
+        render:function(){
+            var candidates = this.model.get('candidates');
+            this.model.set('candidates',_.sortBy(candidates,function(c){
+                /**
+                 * Here should be c.score
+                 */
+                return c.title.length;
+            }));
+            App.ModelView.prototype.render.call(this);
+        }
     });
     
     App.Pages.Ranking = new (App.PageView.extend({

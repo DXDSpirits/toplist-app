@@ -1,10 +1,10 @@
 $(function() {
-    
+
     var OneTopic = function() {
         this.topics = new App.Collections.Topics();
         this.i = 0;
     };
-    
+
     OneTopic.prototype.pick = function(callback) {
         if (this.topics_json && this.i < this.topics_json.length) {
             callback && callback(this.topics_json[(this.i++)]);
@@ -26,7 +26,7 @@ $(function() {
     var TopicsView = App.View.extend({
         events: {
             'click .pk-item .fa': 'pk',
-            'click .skip-pk': 'renderPk',
+            'click .skip-pk': 'skip',
             'webkitAnimationEnd': 'flipEnd'
         },
         template: TPL['one-topic-page'],
@@ -37,9 +37,28 @@ $(function() {
                 this.$el.removeClass('animate');
             }
         },
+        makeList:function(list){
+            if(!_.isArray(list)||list.length<2)return [];
+            var dyadic_list = [];
+            for(var i in list){
+                for(var index=parseInt(i)+1;index<list.length;index++){
+                    dyadic_list.push([
+                        list[i],list[index]
+                    ]);
+                }
+            }
+            _.shuffle(dyadic_list);
+            //耗时???
+            return _.sortBy(dyadic_list,function(c){
+                return c[0].vote_times+c[1].vote_times;
+            });
+        },
         render: function() {
             this.attrs.avatar = _.sample(this.attrs.candidates, 1)[0].picture;
             var self = this;
+            self.pk_group_list=null;
+            self.pk_group_list=this.makeList(this.attrs.candidates);
+            self.pk_group_id=0;
             setTimeout(function() {
                 self.renderTemplate(self.attrs);
                 self.renderPk();
@@ -47,10 +66,26 @@ $(function() {
             this.$el.addClass('animate');
             return this;
         },
+        skip:function(){
+            var topic_id = this.attrs.id;
+            var cid1 = $('.pk-item:eq(0)').attr('data-item');
+            var cid2 = $('.pk-item:eq(1)').attr('data-item');
+            //App.voteResult.addOne(topic_id,cid1,cid2,1);
+            (new App.Models.Vote({
+                topic:topic_id,
+                candidate1:cid1,
+                candidate2:cid2,
+                draw:1
+            })).save();
+            this.renderPk();
+        },
         renderPk: function() {
-            var _shuffle = _.shuffle(this.attrs.candidates);
-            var pk1 = this.templatePkItem(_shuffle[0]),
-                pk2 = this.templatePkItem(_shuffle[1]);
+            var pk_group = this.pk_group_list[this.pk_group_id];
+            if(!_.isArray(pk_group)||pk_group.length==0)return;
+            this.pk_group_id++;
+            //if(this.pk_group_id==pk_group.length)show empty
+            var pk1 = this.templatePkItem(pk_group[0]),
+                pk2 = this.templatePkItem(pk_group[1]);
             var $pkBox = this.$('.pk-box');
             var $refresh = this.$('.skip-pk .fa-refresh');
             $refresh.removeClass('invisible');
@@ -71,6 +106,16 @@ $(function() {
             setTimeout(function() {
                 self.renderPk();
             }, 1000);
+
+            var topic_id = this.attrs.id;
+            var cid1 = $pkItem.attr('data-item');
+            var cid2 = $($pkItem.siblings().get(0)).attr('data-item');
+            (new App.Models.Vote({
+                topic:topic_id,
+                candidate1:cid1,
+                candidate2:cid2,
+                draw:0
+            })).save();
         }
     });
     
@@ -86,12 +131,20 @@ $(function() {
             this.views = {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
+            App.voteResult = this.voteResult = new App.Collections.Votes();
         },
         onClickLeftBtn: function() {
             App.goTo('Ranking', {topic: this.topicAttrs});
         },
         onClickRightBtn: function() {
+            this.submitVotes();
             this.renderTopic();
+        },
+        submitVotes:function(){
+            var voteResult=this.voteResult;
+            if (!voteResult.isEmpty()) {
+                voteResult.sendResult();
+            }
         },
         getWxMessage: function() {
             var message = {

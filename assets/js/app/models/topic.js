@@ -10,45 +10,27 @@ App.Collections.Topics = App.Collection.extend({
 
 App.Data.Topics = new App.Collections.Topics();
 
-/*
-var candidates_example = [
-    {id: 1, image: 'assets/img/candidates/1.jpg', description: '没什么可以说的'},
-    {id: 2, image: 'assets/img/candidates/2.jpg', description: '没什么可以说的'},
-    {id: 3, image: 'assets/img/candidates/3.jpg', description: '没什么可以说的'},
-    {id: 4, image: 'assets/img/candidates/4.jpg', description: '没什么可以说的'},
-    {id: 5, image: 'assets/img/candidates/5.jpg', description: '没什么可以说的'},
-    {id: 6, image: 'assets/img/candidates/6.jpg', description: '没什么可以说的'},
-    {id: 7, image: 'assets/img/candidates/7.jpg', description: '没什么可以说的'},
-    {id: 8, image: 'assets/img/candidates/8.jpg', description: '没什么可以说的'},
-    {id: 9, image: 'assets/img/candidates/9.jpg', description: '没什么可以说的'},
-    {id: 10, image: 'assets/img/candidates/10.jpg', description: '没什么可以说的'},
-];
-App.Data.Topics.set([
-    {
-        id: 1,
-        title: '十大最好喝的咖啡馆',
-        description: '十大最好喝的咖啡馆',
-        candidates: _.shuffle(_.clone(candidates_example))
-    }, {
-        id: 2,
-        title: '十大最难喝的咖啡馆',
-        description: '十大最难喝的咖啡馆',
-        candidates: _.shuffle(_.clone(candidates_example))
-    }, {
-        id: 3,
-        title: '十大最好看的咖啡馆',
-        description: '十大最好看的咖啡馆',
-        candidates: _.shuffle(_.clone(candidates_example))
-    }, {
-        id: 4,
-        title: '十大最好看的咖啡馆',
-        description: '十大最好看的咖啡馆',
-        candidates: _.shuffle(_.clone(candidates_example))
-    }, {
-        id: 5,
-        title: '十大最好看的咖啡馆',
-        description: '十大最好看的咖啡馆',
-        candidates: _.shuffle(_.clone(candidates_example))
+App.Models.Vote=App.Model.extend({
+    urlRoot: App.configs.APIHost + '/topics/vote/',
+});
+
+App.Collections.Votes = App.Collection.extend({
+    url: App.configs.APIHost + '/topics/vote/',
+    model: App.Models.Vote,
+    sendResult:function(options){
+    	console.log("send data");
+	    // this.forEach(function(vote){
+	    // 	vote.save();
+	    // });
+        this.reset();
+    },
+    addOne:function(topic_id,cid1,cid2,draw){
+	    var vote = new App.Models.Vote({
+            topic:topic_id,
+            candidate1:cid1,
+            candidate2:cid2,
+            draw:draw
+        });
+        //this.add(vote);
     }
-]);
-*/
+});
