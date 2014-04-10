@@ -12,7 +12,7 @@ window.App = new (Backbone.View.extend({
     Pages: {},
     
     configs: {
-        APIHost: "http://192.168.1.7:8001",
+        APIHost: "http://api.toplist.oatpie.com",
         ajaxTimeout: 120000
     },
     

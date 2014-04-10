@@ -33,7 +33,7 @@ $(function() {
         templatePkItem: TPL['pk-item'],
         initView: function() {
             //_.bindAll(this, 'get_vote_times');
-            this.vote_times = new App.Collections.VoteTimes();
+            this.vote_times = new App.Models.VoteTimes();
             this.pk_group_list = null;
         },
         flipEnd: function(e) {
@@ -44,12 +44,11 @@ $(function() {
         makeList:function(list){
             var self=this;
             if(_.isEmpty(list)){
-                var list = this.generateRandomList(this.attrs.candidates);
+                self.pk_group_list = this.generateRandomList(this.attrs.candidates);
             }
             else{
-                var list = this.generateSortedList(this.attrs.candidates,list);
+                self.pk_group_list = this.generateSortedList(this.attrs.candidates,list);
             }
-            self.pk_group_list = list;
         },
         get_vote_times:function(c,sortList){
             var id1 = c[0].id,id2 = c[1].id;
@@ -69,6 +68,7 @@ $(function() {
                     ]);
                 }
             }
+            dyadic_list = _.shuffle(dyadic_list);
             return _.sortBy(dyadic_list,function(c){
                 return self.get_vote_times(c,sortList);
             });
@@ -91,7 +91,7 @@ $(function() {
             self.attrs.avatar = _.sample(this.attrs.candidates, 1)[0].picture;
             var vote_times = self.vote_times;
             vote_times.fetch({
-                url: vote_times.url+self.attrs.id+'/vote_times/',
+                url: App.configs.APIHost+'/topics/topic/'+self.attrs.id+'/vote_times/',
                 success: function(){
                     self.makeList(vote_times.toJSON());
                 }
