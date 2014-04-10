@@ -121,7 +121,7 @@ $(function() {
             var pk_group = this.pk_group_list[this.pk_group_id];
             if(!_.isArray(pk_group)||pk_group.length==0)return;
             this.pk_group_id++;
-            if(this.pk_group_id==pk_group.length)this.pk_group_id=0;
+            if(this.pk_group_id==this.pk_group_list.length)this.pk_group_id=0;
             var pk1 = this.templatePkItem(pk_group[0]),
                 pk2 = this.templatePkItem(pk_group[1]);
             var $pkBox = this.$('.pk-box');
