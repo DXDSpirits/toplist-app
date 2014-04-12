@@ -90,10 +90,14 @@ $(function() {
             var self = this;
             self.attrs.avatar = _.sample(this.attrs.candidates, 1)[0].picture;
             var vote_times = self.vote_times;
+            //生成默认值
+            self.makeList([]);
             vote_times.fetch({
                 url: App.configs.APIHost+'/topics/topic/'+self.attrs.id+'/vote_times/',
-                success: function(){
-                    self.makeList(vote_times.toJSON());
+                success: function(model){
+                    if(!_.isEmpty(model.attributes)){
+                        self.makeList(model.toJSON());
+                    }
                 }
             });
             self.pk_group_id=0;
@@ -118,8 +122,10 @@ $(function() {
             this.renderPk();
         },
         renderPk: function() {
-            var pk_group = this.pk_group_list[this.pk_group_id];
-            if(!_.isArray(pk_group)||pk_group.length==0)return;
+            var pk_group = this.pk_group_list[this.pk_group_id]||null;
+            if(!_.isArray(pk_group)||pk_group.length==0){
+                return;
+            }
             this.pk_group_id++;
             if(this.pk_group_id==this.pk_group_list.length)this.pk_group_id=0;
             var pk1 = this.templatePkItem(pk_group[0]),
