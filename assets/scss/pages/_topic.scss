@@ -1,3 +1,17 @@
+@-webkit-keyframes like{
+    45% {
+        -webkit-transform:scale(2);
+    }
+    90% {
+        -webkit-transform:scale(1);
+    }
+    95% {
+        -webkit-transform:scale(1.2);
+    }
+    100% {
+        -webkit-transform:scale(1);
+    }
+}
 #view-ranking {
     .wellbox {
         margin: 15px;
@@ -5,6 +19,25 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, .5);
         border-radius: 5px;
         overflow: hidden;
+        &.animate {
+            @include animation(flip .5s ease-in-out);
+            @include backface-visibility(hidden);
+        }
+        .fa {
+            position: absolute;
+            top: 45px;
+            right: 16px;
+            font-size: 40px;
+            color: grey;
+            opacity: .9;
+            @include transition(all .35s ease-in-out);
+        }
+        .fa.like{
+            color:#2C99F8;
+            -webkit-animation-name: like;
+            -webkit-animation-fill-mode:forwards;
+            -webkit-animation-duration: 500ms;
+        }
     }
     .candidate {
         cursor: pointer;
