@@ -25,6 +25,17 @@ $(function() {
                 window.localStorage.removeItem('like_timestamp');
             }
         },
+        getWxMessage: function() {
+            var message = {
+                img_url : App.makeUrl('/assets/img/pk-icon.png'),
+                img_width : "640",
+                img_height : "640",
+                link : App.makeUrl('#ranking/topic' + App.Pages.Home.topicAttrs.id),
+                desc : App.Pages.Home.topicAttrs.title + ' ' + App.Pages.Home.topicAttrs.description,
+                title : "锐榜Top10/PK时间到"
+            };
+            return message;
+        },
         likeIt:function(e){
             $(e.currentTarget).removeClass('like');
             var like_times;
