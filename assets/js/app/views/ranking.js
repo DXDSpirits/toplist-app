@@ -16,7 +16,7 @@ $(function() {
             'click .header-btn-right': 'onClickRightBtn',
             'webkitAnimationEnd .wellbox': 'flipEnd',
             'click .avatar': 'viewImage',
-            'click .fa':'likeIt'
+            'click .fa.fa-thumbs-up':'likeIt'
         },
         clearLikeTimes:function(){
             var now = new Date().getTime();
