@@ -2,13 +2,7 @@ $(function() {
     var TopicsView = App.ModelView.extend({
         template: TPL['topic-ranking'],
         events:{
-            'webkitAnimationEnd .wellbox': 'flipEnd',
             'click .like-btn':'likeIt'
-        },
-        flipEnd: function(e) {
-            if (e.originalEvent.animationName == "flip") {
-                this.$('.wellbox').removeClass('animate');
-            }
         },
         likeIt:function(e){
             var like_times;
@@ -41,9 +35,10 @@ $(function() {
             }
             e.preventDefault();
         },
-        render:function(){
-            App.ModelView.prototype.render.call(this);
-            this.$('.wellbox').addClass('animate');
+        flipEnd: function(e) {
+            if (e.originalEvent.animationName == "flip") {
+                $('.candidate-list').removeClass('animate');
+            }
         }
     });
     
@@ -51,7 +46,8 @@ $(function() {
         events: {
             //'click .header-btn-left': 'onClickLeftBtn',
             'click .header-btn-right': 'onClickRightBtn',
-            'click .avatar': 'viewImage'
+            'click .avatar': 'viewImage',
+            'webkitAnimationEnd .candidate-list':'FlipEnd'
         },
         checkDate:function(d,old){
             if(d.getDate()-old.getDate()==1){
@@ -118,12 +114,19 @@ $(function() {
         onClickRightBtn: function() {
             this.renderTopic();
         },
+        FlipEnd:function(e){
+            $(e.currentTarget).removeClass('animate');
+        },
         renderTopic: function(attrs){
             if (attrs) {
                 var topicView = this.views.topic;
                 this.topicAttrs = topicView.attrs = attrs;
-                this.topic.set(attrs);
-                this.initLikeTimes(attrs.id);
+                this.$('.candidate-list').addClass('animate');
+                var self=this;
+                setTimeout(function(){
+                    self.topic.set(attrs);
+                    self.initLikeTimes(attrs.id);
+                },250);
             } else {
                 oneTopic.pick(this.renderTopic);
             }
@@ -141,17 +144,19 @@ $(function() {
         },
         render: function() {
             if (this.options.topicId) {
-                //去除动画
                 this.topic.clear();
                 this.topic.set({id: this.options.topicId});
                 this.topic.fetch();
                 this.initLikeTimes(this.options.topicId||this.options.topic.id);
-            } else if (this.options.topic) {
-                //去除动画
+            } 
+            else if (this.options.topic) {
                 var topicView = this.views.topic;
                 this.topicAttrs = topicView.attrs = this.options.topic;
-                this.topic.set(this.options.topic);
-                this.initLikeTimes(this.options.topicId||this.options.topic.id);
+                this.$('.candidate-list').addClass('animate');
+                setTimeout(function(){
+                    this.topic.set(this.options.topic);
+                    this.initLikeTimes(this.options.topicId||this.options.topic.id);
+                },250);
             }
             else{
                 this.renderTopic();

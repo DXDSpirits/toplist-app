@@ -13,16 +13,18 @@
     }
 }
 #view-ranking {
+    .candidate-list{
+        &.animate {
+            @include animation(flip .5s ease-in-out);
+            @include backface-visibility(hidden);
+        }
+    }
     .wellbox {
         margin: 15px;
         padding: 15px;
         box-shadow: 0 0 5px rgba(0, 0, 0, .5);
         border-radius: 5px;
         overflow: hidden;
-        &.animate {
-            @include animation(flip .5s ease-in-out);
-            @include backface-visibility(hidden);
-        }
         .toolbar{
             position:absolute;
             border-top:1px solid #D9D9D9;
