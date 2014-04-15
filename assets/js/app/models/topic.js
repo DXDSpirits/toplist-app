@@ -1,6 +1,13 @@
-
 App.Models.Topic = App.Model.extend({
-	urlRoot: App.configs.APIHost + '/topics/topic/'
+	urlRoot: App.configs.APIHost + '/topics/topic/',
+    parse: function(model){
+        var candidates = model.candidates;
+        model.candidates = _.sortBy(candidates,function(c){
+            if(c.score==0)c.score=Math.floor(Math.random()*(400))+100;
+            return -c.score;
+        });
+        return model;
+    }
 });
 
 App.Collections.Topics = App.Collection.extend({
@@ -36,3 +43,26 @@ App.Collections.Votes = App.Collection.extend({
 });
 
 App.Models.VoteTimes = Backbone.Model.extend({});
+
+var OneTopic = function() {
+    this.topics = new App.Collections.Topics();
+    this.i = 0;
+};
+
+OneTopic.prototype.pick = function(callback) {
+    if (this.topics_json && this.i < this.topics_json.length) {
+        callback && callback(this.topics_json[(this.i++)]);
+    } else {
+        var self = this;
+        this.topics.fetch({
+            reset: true,
+            success: function(collection) {
+                self.topics_json = _.shuffle(collection.toJSON());
+                self.i = 0;
+                self.pick(callback);
+            }
+        });
+    }
+};
+
+oneTopic = new OneTopic();

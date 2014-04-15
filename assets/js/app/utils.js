@@ -6,6 +6,36 @@ App.makeUrl = function(path) {
     return 'http://' + location.host + (path[0] == '/' ? path : '/' + path);
 };
 
+App.showAlertDialog = function(content) {
+    var dialog = new (App.View.extend({
+        className: 'dialog confirm-dialog',
+        template: TPL['alert-dialog'],
+        events: {
+            'click .btn-confirm': 'confirm'
+        },
+        closeDialog: function() {
+            this.remove();
+            $('#dialog-overlay').addClass('hidden');
+            this.undelegateEvents();
+        },
+        openDialog: function() {
+            $('body').append(this.el);
+            $('#dialog-overlay').removeClass('hidden');
+            this.delegateEvents();
+        },
+        confirm: function() {
+            this.closeDialog();
+        },
+        render: function() {
+            this.renderTemplate({content: content});
+            this.openDialog();
+            return this;
+        }
+    }))();
+    dialog.remove();
+    dialog.render();
+};
+
 App.showConfirmDialog = function(title, content, onConfirm) {
     var dialog = new (App.View.extend({
         className: 'dialog confirm-dialog',

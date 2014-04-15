@@ -1,26 +1,78 @@
 $(function() {
     var TopicsView = App.ModelView.extend({
         template: TPL['topic-ranking'],
+        events:{
+            'webkitAnimationEnd .wellbox': 'flipEnd',
+            'click .like-btn':'likeIt'
+        },
+        flipEnd: function(e) {
+            if (e.originalEvent.animationName == "flip") {
+                this.$('.wellbox').removeClass('animate');
+            }
+        },
+        likeIt:function(e){
+            var like_times;
+            var topic_id=this.model.get('id');
+            var thumb_icon = $(e.currentTarget).find('.fa-thumbs-up').removeClass('like');
+            
+            var times_array=JSON.parse(window.localStorage.getItem('like_times'));
+            if(times_array[topic_id]){
+                like_times=parseInt(times_array[topic_id]||0);
+            }
+            else{
+                times_array[topic_id]=0;
+                like_times=0;
+            }
+            if(like_times<3){
+                var id = thumb_icon.attr('data-id');
+                var scoreP=$(e.currentTarget).siblings('.score');
+                scoreP.text(parseInt(scoreP.text())+1);
+                new (Backbone.Model.extend({urlRoot: App.configs.APIHost + '/topics/candidate/'+id+'/like/'}))().save();
+                var times_array=JSON.parse(window.localStorage.getItem('like_times'));
+                times_array[topic_id]=like_times+1;
+                $('.header-btn-left .btn-text b').text(2-like_times);
+                window.localStorage.setItem('like_times',JSON.stringify(times_array));
+                setTimeout(function(){
+                    thumb_icon.addClass('like');
+                },0);
+            }
+            else{
+                App.showAlertDialog('每天最多只能投3次');
+            }
+            e.preventDefault();
+        },
         render:function(){
-            var candidates = this.model.get('candidates');
-            this.model.set('candidates',_.sortBy(candidates,function(c){
-                return -c.score;
-            }));
             App.ModelView.prototype.render.call(this);
+            this.$('.wellbox').addClass('animate');
         }
     });
     
     App.Pages.Ranking = new (App.PageView.extend({
         events: {
-            'click .header-btn-left': 'onClickLeftBtn',
+            //'click .header-btn-left': 'onClickLeftBtn',
             'click .header-btn-right': 'onClickRightBtn',
-            'webkitAnimationEnd .wellbox': 'flipEnd',
-            'click .avatar': 'viewImage',
-            'click .fa.fa-thumbs-up':'likeIt'
+            'click .avatar': 'viewImage'
+        },
+        checkDate:function(d,old){
+            if(d.getDate()-old.getDate()==1){
+                return true;
+            }
+            else if(d.getMonth()-old.getMonth()>1){
+                return true;
+            }
+            else if(d.getMonth()==0&&old.getMonth()==11){
+                return true;
+            }
+            else{
+                return false;
+            }
         },
         clearLikeTimes:function(){
-            var now = new Date().getTime();
-            if(now - window.localStorage.getItem('like_timestamp')>24*3600*1000){
+            var timestamp = window.localStorage.getItem('like_timestamp');
+            var d  =new Date();
+            var old= new Date();
+            old.setTime(timestamp);
+            if(d.getTime() - timestamp >24*3600*1000||this.checkDate(d,old)){
                 window.localStorage.removeItem('like_times');
                 window.localStorage.removeItem('like_timestamp');
             }
@@ -36,47 +88,21 @@ $(function() {
             };
             return message;
         },
-        likeIt:function(e){
-            $(e.currentTarget).removeClass('like');
+        initLikeTimes:function(topic_id){
             var like_times;
-            if(!window.localStorage.getItem('like_times')){
-                window.localStorage.setItem('like_timestamp',new Date().getTime());
+            if(window.localStorage.getItem('like_times')==null){
+                window.localStorage.setItem('like_times','{"'+topic_id+'":0}');
                 like_times=0;
+                window.localStorage.setItem('like_timestamp',new Date().getTime());
             }
             else{
-                var like_times=parseInt(window.localStorage.getItem('like_times'));
+                var times_array=JSON.parse(window.localStorage.getItem('like_times'));
+                like_times=parseInt(times_array[topic_id]||0);
             }
-            if(like_times<=3){
-                var id = $(e.currentTarget).attr('data-id');
-                var scoreP=$(e.currentTarget).siblings('.score');
-                scoreP.text('Score:'+(parseInt(scoreP.text().substr(6))+1));
-                new (Backbone.Model.extend({urlRoot: App.configs.APIHost + '/topics/candidate/'+id+'/like/'}))().save();
-                window.localStorage.setItem('like_times',like_times+1);
-                setTimeout(function(){
-                    $(e.currentTarget).addClass('like');
-                },0);
-            }
-            else{
-                alert('每天最多只能投3次');
-            }
-            e.preventDefault();
-        },
-        flipEnd: function(e) {
-            if (e.originalEvent.animationName == "flip") {
-                $(e.currentTarget).removeClass('animate');
-                if(!App.Pages.Ranking.first){
-                    this.options.topic = App.Pages.Home.topicAttrs;
-                    this.topic.set(this.options.topic);
-                    App.Pages.Ranking.first=true;
-                }
-            }
-        },
-        onClickRightBtn: function(){
-            App.Pages.Ranking.first=false;
-            App.Pages.Home.renderTopic();
-            this.$('.wellbox').addClass('animate');
+            this.$('.header-btn-left .btn-text b').text(3-like_times);
         },
         initPage: function() {
+            _.bindAll(this, 'renderTopic');
             this.clearLikeTimes();
             this.topic = new App.Models.Topic();
             this.views = {
@@ -85,6 +111,22 @@ $(function() {
                     model: this.topic
                 })
             };
+        },
+        onClickLeftBtn:function(){
+            App.goTo('Home', {topic: this.topicAttrs});
+        },
+        onClickRightBtn: function() {
+            this.renderTopic();
+        },
+        renderTopic: function(attrs){
+            if (attrs) {
+                var topicView = this.views.topic;
+                this.topicAttrs = topicView.attrs = attrs;
+                this.topic.set(attrs);
+                this.initLikeTimes(attrs.id);
+            } else {
+                oneTopic.pick(this.renderTopic);
+            }
         },
         viewImage: function(e) {
             var $avatar = $(e.currentTarget);
@@ -99,11 +141,20 @@ $(function() {
         },
         render: function() {
             if (this.options.topicId) {
+                //去除动画
                 this.topic.clear();
                 this.topic.set({id: this.options.topicId});
                 this.topic.fetch();
+                this.initLikeTimes(this.options.topicId||this.options.topic.id);
             } else if (this.options.topic) {
+                //去除动画
+                var topicView = this.views.topic;
+                this.topicAttrs = topicView.attrs = this.options.topic;
                 this.topic.set(this.options.topic);
+                this.initLikeTimes(this.options.topicId||this.options.topic.id);
+            }
+            else{
+                this.renderTopic();
             }
         }
     }))({el: $("#view-ranking")});

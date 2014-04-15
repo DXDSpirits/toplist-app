@@ -6,8 +6,16 @@
 {{#candidates}}
 <div class="wellbox candidate">
     <div class="avatar" style="background-image:url({{picture}})"></div>
-    <p>{{title}}</p>
-    <p class="score">Score:{{score}}</p>
-    <i class="fa fa-thumbs-up" data-id={{id}}></i>
+    <div class="content">
+	    <p>{{title}}</p>
+		<p class="toolbar">
+			<span class="score">
+    			{{score}}
+    		</span>
+			<span class="like-btn">
+    			<i class="fa fa-thumbs-up" data-id={{id}}></i>
+    		</span>
+    	</p>
+    </div>
 </div>
 {{/candidates}}

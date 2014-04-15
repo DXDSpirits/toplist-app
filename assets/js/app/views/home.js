@@ -1,27 +1,4 @@
 $(function() {
-
-    var OneTopic = function() {
-        this.topics = new App.Collections.Topics();
-        this.i = 0;
-    };
-
-    OneTopic.prototype.pick = function(callback) {
-        if (this.topics_json && this.i < this.topics_json.length) {
-            callback && callback(this.topics_json[(this.i++)]);
-        } else {
-            var self = this;
-            this.topics.fetch({
-                reset: true,
-                success: function(collection) {
-                    self.topics_json = _.shuffle(collection.toJSON());
-                    self.i = 0;
-                    self.pick(callback);
-                }
-            });
-        }
-    };
-    
-    var oneTopic = new OneTopic();
     
     var TopicsView = App.View.extend({
         events: {
@@ -112,7 +89,6 @@ $(function() {
             var topic_id = this.attrs.id;
             var cid1 = $('.pk-item:eq(0)').attr('data-item');
             var cid2 = $('.pk-item:eq(1)').attr('data-item');
-            //App.voteResult.addOne(topic_id,cid1,cid2,1);
             (new App.Models.Vote({
                 topic:topic_id,
                 candidate1:cid1,
@@ -165,7 +141,7 @@ $(function() {
     
     App.Pages.Home = new (App.PageView.extend({
         events: {
-            'click .header-btn-left': 'onClickLeftBtn',
+            //'click .header-btn-left': 'onClickLeftBtn',
             'click .header-btn-right': 'onClickRightBtn',
             'click .pk-item': 'viewImage'
         },
@@ -175,21 +151,13 @@ $(function() {
             this.views = {
                 topic: new TopicsView({ el: this.$('.one-topic') })
             };
-            //App.voteResult = this.voteResult = new App.Collections.Votes();
         },
         onClickLeftBtn: function() {
             App.goTo('Ranking', {topic: this.topicAttrs});
         },
         onClickRightBtn: function() {
-            //this.submitVotes();
             this.renderTopic();
         },
-        // submitVotes:function(){
-        //     var voteResult=this.voteResult;
-        //     if (!voteResult.isEmpty()) {
-        //         voteResult.sendResult();
-        //     }
-        // },
         getWxMessage: function() {
             var message = {
                 img_url : App.makeUrl('/assets/img/pk-icon.png'),
@@ -228,7 +196,12 @@ $(function() {
                 topic.fetch({success: function() {
                     self.renderTopic(topic.toJSON());
                 }});
-            } else {
+            }
+            else if(this.options.topic){
+                //去除动画
+                this.renderTopic(this.options.topic);
+            }
+            else {
                 this.renderTopic();
             }
         }

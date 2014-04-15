@@ -23,26 +23,55 @@
             @include animation(flip .5s ease-in-out);
             @include backface-visibility(hidden);
         }
-        .fa {
-            position: absolute;
-            top: 45px;
-            right: 16px;
-            font-size: 40px;
+        .toolbar{
+            position:absolute;
+            border-top:1px solid #D9D9D9;
+            bottom:0;
+            left:0;
+            margin:0;
+            width:100%;
+            height:30px;
+            background-color:#F2F2F2;
+        }
+        .toolbar span{
+            height:30px;
+            vertical-align:middle;
+            display:inline-block;
+            width:50%;
+            color:grey;
+        }
+        .score{
+            text-align:center;
+            padding-top:5px;
+        }
+        .like-btn{
+            border-left:1px solid #D9D9D9;
+        }
+        .fa-thumbs-up {
+            font-size: 20px;
+            margin-top:5px;
+            margin-left:38px;
             color: grey;
             opacity: .9;
             @include transition(all .35s ease-in-out);
         }
-        .fa.like{
+        .fa-thumbs-up.like{
             color:#2C99F8;
             -webkit-animation-name: like;
             -webkit-animation-fill-mode:forwards;
             -webkit-animation-duration: 500ms;
         }
+        .content{
+            padding:15px;
+            height:100px;
+            position:relative;
+        }
     }
     .candidate {
         cursor: pointer;
         height: 100px;
-        padding-left: 120px;
+        padding:0;
+        padding-left: 100px;
         position: relative;
         .avatar {
             position: absolute;
