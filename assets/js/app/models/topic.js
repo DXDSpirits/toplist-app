@@ -44,6 +44,15 @@ App.Collections.Votes = App.Collection.extend({
 
 App.Models.VoteTimes = Backbone.Model.extend({});
 
+App.Models.Comment = Backbone.Model.extend({
+    urlRoot: App.configs.APIHost + '/topics/topic/'
+});
+
+App.Collections.Comment=App.Collection.extend({
+    url: App.configs.APIHost + '/topics/topic/',
+    model: App.Models.Comment
+});
+
 var OneTopic = function() {
     this.topics = new App.Collections.Topics();
     this.i = 0;

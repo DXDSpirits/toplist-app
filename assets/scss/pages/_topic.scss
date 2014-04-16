@@ -36,24 +36,26 @@
             background-color:#F2F2F2;
         }
         .toolbar span{
+            width:20%;
             height:30px;
             vertical-align:middle;
-            display:inline-block;
-            width:50%;
-            color:grey;
-        }
-        .score{
             text-align:center;
+            display:inline-block;
+            @include box-sizing(border-box);
+            //border-left:1px solid #D9D9D9;
+            color:#aaa;
             padding-top:5px;
         }
-        .like-btn{
-            border-left:1px solid #D9D9D9;
+        span.score{
+            width:55%;
+            text-align:center;
+        }
+        .fa-comment{
+            font-size:16px;
+            opacity: .9;
         }
         .fa-thumbs-up {
             font-size: 20px;
-            margin-top:5px;
-            margin-left:38px;
-            color: grey;
             opacity: .9;
             @include transition(all .35s ease-in-out);
         }

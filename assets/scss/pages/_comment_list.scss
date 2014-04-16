@@ -1,0 +1,42 @@
+#view-list{
+	.comment-list{
+		margin:5px;
+	    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	    border-radius:5px;
+		overflow-y:scroll;
+		position:relative;
+		min-height:400px;
+		.text-center{
+			padding-top:5px;
+			padding-bottom:5px;
+		}
+	}
+	.comment-list-item{
+		height:40px;
+		vertical-align:center;
+		padding:10px;
+		@include box-sizing(border-box);
+		border-bottom:1px solid #D9D9D9;
+	}
+	&.view.view-next > .wrapper {
+	    @include animation(scalefromleftbottom .35s linear);
+	    -webkit-animation-fill-mode: forwards;
+	    -webkit-transform-origin:center left;
+	}
+	&.view.view-prev > .wrapper {
+	    @include animation(scaletoleftbottom .35s linear);
+	    -webkit-animation-fill-mode: forwards;
+	    -webkit-transform-origin:center left;
+	}
+}
+
+#view-comment{
+	&.view.view-next > .wrapper {
+	    @include animation(slideinfrombottom .35s linear);
+	    -webkit-animation-fill-mode: forwards;
+	}
+	&.view.view-prev > .wrapper {
+	    @include animation(slideouttobottom .35s linear);
+	    -webkit-animation-fill-mode: forwards;
+	}
+}

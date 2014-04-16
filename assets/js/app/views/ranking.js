@@ -2,7 +2,15 @@ $(function() {
     var TopicsView = App.ModelView.extend({
         template: TPL['topic-ranking'],
         events:{
-            'click .like-btn':'likeIt'
+            'click .like-btn':'likeIt',
+            'click .score':'showComment',
+            'click .comment':'comment'
+        },
+        showComment:function(){
+            App.goTo('List', {topicId: this.model.get('id')});
+        },
+        comment:function(){
+            App.goTo('Comment', {topicId: this.model.get('id')});
         },
         likeIt:function(e){
             var like_times;
@@ -113,6 +121,7 @@ $(function() {
         },
         onClickRightBtn: function() {
             this.renderTopic();
+            $('.comment-list-content').html('');
         },
         FlipEnd:function(e){
             $(e.currentTarget).removeClass('animate');

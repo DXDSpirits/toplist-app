@@ -14,10 +14,23 @@
             @keyframes #{$name} { from {                           transform: $from; } to {                         transform: $to; } }
 }
 
+@mixin keyframes-fade($name, $from, $to) {
+    @-webkit-keyframes #{$name} { from { opacity: $from; } to { opacity: $to; } }
+}
+
+@include keyframes-fade(fadeIn, 0, 100%);
+@include keyframes-fade(fadeOut, 100%, 0);
+
 @include keyframes-transform(slideouttoleft, translate3d(0, 0, 0), translate3d(-100%, 0, 0));
 @include keyframes-transform(slideinfromright, translate3d(100%, 0, 0), translate3d(0, 0, 0));
 @include keyframes-transform(slideouttoright, translate3d(0, 0, 0), translate3d(100%, 0, 0));
 @include keyframes-transform(slideinfromleft, translate3d(-100%, 0, 0), translate3d(0, 0, 0));
+
+@include keyframes-transform(slideinfrombottom, translate3d(0, 100%, 0), translate3d(0, 0, 0));
+@include keyframes-transform(slideouttobottom, translate3d(0, 0, 0), translate3d(0, 100%, 0));
+
+@include keyframes-transform(scalefromleftbottom, scale(0,0), scale(1,1));
+@include keyframes-transform(scaletoleftbottom, scale(1,1), scale(0,0));
 
 @include keyframes-transform(flip, rotateY(0), rotateY(360deg));
 

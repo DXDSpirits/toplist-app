@@ -18,3 +18,8 @@
         @include flexible(1, $orient);
     }
 }
+@mixin box-sizing($boxmodel) {
+    -webkit-box-sizing: $boxmodel;
+       -moz-box-sizing: $boxmodel;
+            box-sizing: $boxmodel;
+}
