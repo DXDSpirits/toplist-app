@@ -1,13 +1,19 @@
 $(function() {
+    var CommentList = App.CollectionView.extend({
+        ModelView: App.ModelView.extend({
+            template: TPL['comment-item'],
+            className:'comment-list-item',
+            render:function(){
+                return App.ModelView.prototype.render.call(this);
+            }
+        })
+    });
+
     var TopicsView = App.ModelView.extend({
         template: TPL['topic-ranking'],
         events:{
             'click .like-btn':'likeIt',
-            'click .score':'showComment',
             'click .comment':'comment'
-        },
-        showComment:function(){
-            App.goTo('List', {topicId: this.model.get('id')});
         },
         comment:function(){
             App.goTo('Comment', {topicId: this.model.get('id')});
@@ -52,10 +58,35 @@ $(function() {
     
     App.Pages.Ranking = new (App.PageView.extend({
         events: {
-            //'click .header-btn-left': 'onClickLeftBtn',
             'click .header-btn-right': 'onClickRightBtn',
             'click .avatar': 'viewImage',
+            'click .show':'showComment',
+            'click .comment-list-content':'preventDefault',
+            'click .comment-list':'closeComment',
             'webkitAnimationEnd .candidate-list':'FlipEnd'
+        },
+        preventDefault:function(e){
+            e.stopPropagation();
+        },
+        closeComment:function(){
+            self.$('.comment-list-content').removeClass('scale').addClass('inv');
+            self.$('.comment-list').addClass('inv').one('webkitAnimationEnd',function(){
+                $(this).addClass('invisible').removeClass('inv');
+            });
+        },
+        showComment:function(){
+            var id = this.topic.id;
+            var self=this;
+            self.$('.comment-list').removeClass('invisible');
+            self.$('.comment-list-content').addClass('scale').removeClass('inv')
+            self.comment_list.fetch({
+                url: App.configs.APIHost + '/topics/topic/'+id+'/comment/',
+                success:function(collection){
+                    if(collection.length==0){
+                        self.$('.comment-list-content').html('<div class="comment-list-item"><div class="comment-item">暂时无评论</div></div>');
+                    }
+                }
+            });
         },
         checkDate:function(d,old){
             if(d.getDate()-old.getDate()==1){
@@ -107,9 +138,14 @@ $(function() {
         },
         initPage: function() {
             _.bindAll(this, 'renderTopic');
+            this.comment_list = new App.Collections.Comment();
             this.clearLikeTimes();
             this.topic = new App.Models.Topic();
             this.views = {
+                list: new CommentList({
+                    collection: this.comment_list,
+                    el: this.$('.comment-list-content')
+                }),
                 topic: new TopicsView({
                     el: this.$('.wrapper'),
                     model: this.topic

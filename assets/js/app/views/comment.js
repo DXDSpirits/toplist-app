@@ -39,8 +39,8 @@ $(function() {
         render:function(){
             setTimeout(function(){
                 //this.$('#comment-box').click();
-                this.$('.dialog-comment').click();
-            },1000);
+                this.$('.dialog-comment').trigger('click');
+            },100);
         },
         focusTextarea: function(e){
             this.$('#comment-box').focus();
