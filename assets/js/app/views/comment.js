@@ -5,9 +5,6 @@ $(function() {
             'click .header-btn-right': 'onClickRightBtn',
             'click .dialog-comment': 'focusTextarea'
         },
-        initPage: function(){
-
-        },
         onClickLeftBtn:function(){
             this.postArticle();
         },

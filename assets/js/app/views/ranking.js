@@ -69,16 +69,22 @@ $(function() {
             e.stopPropagation();
         },
         closeComment:function(){
-            self.$('.comment-list-content').removeClass('scale').addClass('inv');
+            self.$('.comment-list-wrapper').removeClass('scale').addClass('inv');
             self.$('.comment-list').addClass('inv').one('webkitAnimationEnd',function(){
-                $(this).addClass('invisible').removeClass('inv');
+                $(this).addClass('invisible').removeClass('inv').css('-webkit-transform','translate3d(100%,0,0)');
+                $('.comment-list-wrapper .close-icon').remove();
             });
+            //self.$('.comment-list-content').css('-webkit-overflow-scrolling','');
         },
         showComment:function(){
             var id = this.topic.id;
             var self=this;
-            self.$('.comment-list').removeClass('invisible');
-            self.$('.comment-list-content').addClass('scale').removeClass('inv')
+            self.$('.comment-list').removeClass('invisible').css('-webkit-transform','translate3d(0,0,0)');
+            self.$('.comment-list-wrapper').addClass('scale').removeClass('inv').one('webkitAnimationEnd',
+            function(){
+                $(this).prepend('<div class="close-icon">x</div>');
+            });
+            //self.$('.comment-list-content').css('-webkit-overflow-scrolling','touch');
             self.comment_list.fetch({
                 url: App.configs.APIHost + '/topics/topic/'+id+'/comment/',
                 success:function(collection){

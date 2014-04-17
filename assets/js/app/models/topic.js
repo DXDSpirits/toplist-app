@@ -50,7 +50,33 @@ App.Models.Comment = Backbone.Model.extend({
 
 App.Collections.Comment=App.Collection.extend({
     url: App.configs.APIHost + '/topics/topic/',
-    model: App.Models.Comment
+    model: App.Models.Comment,
+    parse:function(response){
+        response.forEach(function(e){
+            var now = new Date();
+            /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z$/.exec(e.time_created);
+            var year = parseInt(RegExp.$1);
+            var month = parseInt(RegExp.$2);
+            var day = parseInt(RegExp.$3);
+            var hour = parseInt(RegExp.$4);
+            if(year!=now.getFullYear()){
+                e.time_created = (now.getFullYear()-year)+'y';
+            }
+            else if(month!=(now.getMonth()+1)){
+                e.time_created = (now.getMonth()+1-month)+'m';
+            }
+            else if(day!=now.getDate()){
+                e.time_created = (now.getDate()-day)+'d';
+            }
+            else if(hour!=now.getHours()){
+                e.time_created = (now.getHours()-hour)+'h';
+            }
+            else{
+                e.time_created = 'just now';
+            }
+        });
+        return response;
+    }
 });
 
 var OneTopic = function() {
